@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>写字楼</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="z8EeuYl0nS" />
+<meta name="keywords" content="华夏房产">
+<meta name="description" content="华夏房产">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+<link href="css/basic.css" rel="stylesheet"/>
+<script src="js/rem.js"></script>
+<script src="js/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/base.js" type="application/javascript"></script>
+<script src="js/jquery1.8.3.js"></script>
+</head>
+<body style="background:#fff;">
+<div id="app">
+	<div class="w750 bg">
+		<div style="position: fixed;top:0;background:#fff;z-index:999;width:100%;">
+			<div class="search_second w710 flex" style="margin-top: 0.2rem;margin-bottom: 0.2rem;z-index:99">
+			    <div class="search_right flex font28 color6 bg" style="width:100%;">
+			    	<input type="" style="width:88%;" class="bg" name="" placeholder="请输入楼盘名称、附近商圈、地铁"/>
+				      <div class="search_btn flex bg" style="width:12%">
+				       <img src="images/search.png">
+				      </div>
+			    </div>
+			</div>
+			<div class="sort_select flex">
+				<div class="sort_cont flexRowBetween">
+					<div class="select_item flexRowBetween" v-for ="(item,index) in menuData" @click="tab(index)">
+						<span class="span1">{{item}}</span>
+						<span class="span2"><img src="images/up1.png"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mask" :style="isShow == 0||isShow == 1||isShow == 2||isShow == 3?'height:100%':'height:0'">
+			<div class="select_cont">
+				<div class="select_box" :style="isShow == 0?'display:block':'display:none'">
+					<div class="select_top flex">
+						<img src="images/up2.png" style="left:12.5%">
+					</div>
+					<div class="select_bottom">
+						<div class="select_lines font30 color3">不限</div>
+						<div class="select_lines font30 color3">海城区</div>
+						<div class="select_lines font30 color3">海港区</div>
+						<div class="select_lines font30 color3">银海区</div>
+					</div>
+				</div>
+				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
+					<div class="select_top flex">
+						<img src="images/up2.png" style="left:37.5%">
+					</div>
+					<div class="select_bottom">
+						<div class="select_lines font30 color3">8000</div>
+						<div class="select_lines font30 color3">9000</div>
+						<div class="select_lines font30 color3">15000</div>
+						<div class="select_lines font30 color3">17000</div>
+					</div>
+				</div>
+				<div class="select_box" :style="isShow == 2?'display:block':'display:none'">
+					<div class="select_top flex" >
+						<img src="images/up2.png"  style="left:61.5%">
+					</div>
+					<div class="select_bottom">
+						<div class="select_lines font30 color3">不限</div>
+						<div class="select_lines font30 color3">三室两厅</div>
+						<div class="select_lines font30 color3">三室两厅</div>
+						<div class="select_lines font30 color3">三室两厅</div>
+					</div>
+				</div>
+				<div class="select_box" :style="isShow == 3?'display:block':'display:none'">
+					<div class="select_top flex" >
+						<img src="images/up2.png"  style="left:86.5%">
+					</div>
+					<div class="select_bottom">
+						<div class="w710">
+							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">类型</p>
+							<div class="condition flexRowBetween">
+								<div class="condition_item">不限</div>
+								<div class="condition_item">住宅</div>
+								<div class="condition_item">别墅</div>
+								<div class="condition_item">写字楼</div>
+							</div>
+							<div class="condition flex border_c padding30" style="margin-top:0.18rem;">
+								<div class="condition_item" style="margin-right:0.08rem;">商铺</div>
+								<div class="condition_item">两限房</div>
+							</div>
+							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">面积</p>
+							<div class="condition flexRowBetween area_con padding30  border_c">
+								<div class="condition_item">50m²以下</div>
+								<div class="condition_item">50-70m²</div>
+								<div class="condition_item">70-90m²</div>
+								<div class="condition_item">90-110m²</div>
+								<div class="condition_item">110-130m²</div>
+								<div class="condition_item">130-150m²</div>
+								<div class="condition_item">150-170m²</div>
+								<div class="condition_item">200m²</div>
+							</div>
+							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">销售状态</p>
+							<div class="condition flexRowBetween padding30 border_c">
+								<div class="condition_item">在售</div>
+								<div class="condition_item">待售</div>
+								<div class="condition_item">售完</div>
+							</div>
+							<div class="confirm_btn flexRowBetween">
+								<div class="font28 color6 clear_condition">清空搜索条件</div>
+								<div class="bg1 font28 color1">确认</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="house_all">
+				<div class="house_list w710 flex">
+					<div class="house_list_cont flex">
+						<div class="house_img">
+							<img src="images/1.jpg">
+						</div>
+						<div class="house_right">
+							<div class="flex houseName">
+								<h4 class="font30 color3">碧桂园·北纬21°</h4>
+								<span class="font22 color9">[银海区]</span>
+							</div>
+							<div class="house_price flexRowBetween">
+								<p>
+									<span class="font28 color3">4.5分</span>
+									<span class="font24 color6">140评分</span>
+								</p>
+								<span class="font24 color">均价11000元/m²</span>
+							</div>
+							<p class="font24 color9" style="height:20%">73~93平米</p>
+							<div class="house_condition flex" style="height:20%;">
+								<p class="font24 bg">普通住宅</p>
+								<p class="font24 bg">花园洋房</p>
+								<p class="font24 bg">普通住宅</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="house_list w710 flex">
+					<div class="house_list_cont flex">
+						<div class="house_img">
+							<img src="images/1.jpg">
+						</div>
+						<div class="house_right">
+							<div class="flex houseName">
+								<h4 class="font30 color3">碧桂园·北纬21°</h4>
+								<span class="font22 color9">[银海区]</span>
+							</div>
+							<div class="house_price flexRowBetween">
+								<p>
+									<span class="font28 color3">4.5分</span>
+									<span class="font24 color6">140评分</span>
+								</p>
+								<span class="font24 color">均价11000元/m²</span>
+							</div>
+							<p class="font24 color9" style="height:20%">73~93平米</p>
+							<div class="house_condition flex" style="height:20%;">
+								<p class="font24 bg">普通住宅</p>
+								<p class="font24 bg">花园洋房</p>
+								<p class="font24 bg">普通住宅</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="house_list w710 flex">
+					<div class="house_list_cont flex">
+						<div class="house_img">
+							<img src="images/1.jpg">
+						</div>
+						<div class="house_right">
+							<div class="flex houseName">
+								<h4 class="font30 color3">碧桂园·北纬21°</h4>
+								<span class="font22 color9">[银海区]</span>
+							</div>
+							<div class="house_price flexRowBetween">
+								<p>
+									<span class="font28 color3">4.5分</span>
+									<span class="font24 color6">140评分</span>
+								</p>
+								<span class="font24 color">均价11000元/m²</span>
+							</div>
+							<p class="font24 color9" style="height:20%">73~93平米</p>
+							<div class="house_condition flex" style="height:20%;">
+								<p class="font24 bg">普通住宅</p>
+								<p class="font24 bg">花园洋房</p>
+								<p class="font24 bg">普通住宅</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="house_list w710 flex">
+					<div class="house_list_cont flex">
+						<div class="house_img">
+							<img src="images/1.jpg">
+						</div>
+						<div class="house_right">
+							<div class="flex houseName">
+								<h4 class="font30 color3">碧桂园·北纬21°</h4>
+								<span class="font22 color9">[银海区]</span>
+							</div>
+							<div class="house_price flexRowBetween">
+								<p>
+									<span class="font28 color3">4.5分</span>
+									<span class="font24 color6">140评分</span>
+								</p>
+								<span class="font24 color">均价11000元/m²</span>
+							</div>
+							<p class="font24 color9" style="height:20%">73~93平米</p>
+							<div class="house_condition flex" style="height:20%;">
+								<p class="font24 bg">普通住宅</p>
+								<p class="font24 bg">花园洋房</p>
+								<p class="font24 bg">普通住宅</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style="font-size:0.20rem;color:#666;text-align:center;">
+			    技术支持:西安纯粹科技有限公司
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">      
+    var app = new Vue({
+        el: '#app',
+        data: function() {
+            return {
+            	isShow:999,
+            	menuData:['区域','租金','面积','更多'],
+            }
+        },
+        
+        created: function () {
+
+        },
+
+        methods:{
+        	tab(e){
+        		const self =this;
+        		if(self.isShow == e){
+ 					self.isShow = 999
+        		}else{
+        			self.isShow = e
+        		}
+        	}
+        }
+    });
+            
+</script>
+</body>
+</html>

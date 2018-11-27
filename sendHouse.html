@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>我要出租</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="z8EeuYl0nS" />
+<meta name="keywords" content="华夏房产">
+<meta name="description" content="华夏房产">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+<link href="css/basic.css" rel="stylesheet"/>
+<script src="js/rem.js"></script>
+<script src="js/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/base.js" type="application/javascript"></script>
+<script src="js/jquery1.8.3.js"></script>
+</head>
+<body style="background:#fff;">
+<div id="app">
+	<div class="w750">
+		<div class="w710">
+			<div class="main">
+				<div class="input_list1 font28 flex">
+					<div class="input_before">小区名称:</div>
+					<input placeholder="请输入小区名称"/>
+				</div>
+				<div class="input_list1 font28 flex">
+					<div class="input_before">建筑类型:</div>
+					<input placeholder="请输入建筑类型"/>
+				</div>
+				<div class="input_list1 font28 flex">
+					<div class="input_before">地址:</div>
+					<input placeholder="请输入地址"/>
+				</div>
+				<div class="input_list1 font28 flex">
+					<div class="input_before">年代:</div>
+					<input placeholder="请输入年代"/>
+				</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">户型:</div>
+					<div class="input flexRowBetween">
+						<div class="input_item flexRowBetween radius10">
+							<input placeholder=""/>
+							<span>室</span>
+						</div>
+						<div class="input_item flexRowBetween radius10">
+							<input placeholder=""/>
+							<span>室</span>
+						</div>
+						<div class="input_item flexRowBetween radius10">
+							<input placeholder=""/>
+							<span>室</span>
+						</div>
+					</div>
+				</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">建筑面积:</div>
+					<div class="input flexRowBetween">
+						<div class="input_item flexRowBetween radius10">
+							<input placeholder=""/>
+							<span>m²</span>
+						</div>
+					</div>
+				</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">楼层:</div>
+					<div class="input flexRowBetween">
+						<div class="input_item flexRowBetween radius10">
+							<span>第</span>
+							<input placeholder=""/>
+							<span>层</span>
+						</div>
+						<div class="input_item flexRowBetween radius10">
+							<span>第</span>
+							<input placeholder=""/>
+							<span>层</span>
+						</div>
+						<div class="input_item" style="border:none;">
+						</div>
+					</div>
+				</div>
+				<div class="input_list1 font28 flex">
+					<div class="input_before">精装程度:</div>
+					<div class="input flexRowBetween">
+						<div class="input_item radius10 bg2">
+							毛坯
+						</div>
+						<div class="input_item radius10 bg2">
+							精装
+						</div>
+						<div class="input_item radius10 bg2">
+							简装
+						</div>
+						<div class="input_item radius10 bg2">
+							拎包入住
+						</div>
+					</div>
+				</div>
+				<div class="input_list1 font28 flex"  style="border:none;">
+					<div class="input_before">朝向:</div>
+					<div class="input">
+						<select class="send_select" value="南北朝向">
+							<option value="南北朝向"></option>
+							<option value="南北朝向">南北朝向</option>
+							<option value="南北朝向">南北朝向</option>
+							<option value="南北朝向">南北朝向</option>
+							<option value="南北朝向">南北朝向</option>
+						</select>
+					</div>
+				</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">售价:</div>
+					<div class="input flexRowBetween">
+						<div class="input_item flexRowBetween radius10" style="width:2rem;">
+							<input placeholder=""/>
+							<span>万</span>
+						</div>
+					</div>
+				</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">称呼:</div>
+					<div class="input flexRowBetween">
+						<div class="input_item radius10" style="width:2rem;">
+							<input placeholder=""/>
+						</div>
+						<div class="gender flex">
+							<label><input type="radio" name="radio" value="1" style="width:auto;height:auto">男 </label> 
+							<label><input name="女" type="radio" value="" style="width:auto;height:auto"/>女 </label> 
+						</div>
+					</div>
+				</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">手机号:</div>
+					<div class="input flexRowBetween">
+						<div class="input_item radius10" style="width:3.5rem;">
+							<input placeholder=""/>
+						</div>
+					</div>
+				</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">验证码:</div>
+					<div class="input flex">
+						<input placeholder="" class="input_item" style="width:2rem;margin-right:0.3rem"/>
+						<div class="input_item radius10 bg2">
+							获取验证码
+						</div>
+					</div>
+				</div>
+				<div class="submit_info" style="margin:0.3rem auto">确认发布</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="font-size:0.20rem;color:#666;text-align:center;">
+    技术支持:西安纯粹科技有限公司
+</div>
+<div class="space_bottom"></div>
+<script type="text/javascript">      
+    var app = new Vue({
+        el: '#app',
+        data: function() {
+            return {
+            }
+        },
+        
+        created: function () {
+
+        },
+
+        methods:{
+
+        }
+    });
+            
+</script>
+</body>
+</html>
