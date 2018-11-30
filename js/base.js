@@ -1,5 +1,5 @@
 window.base={
-    g_restUrl:'http://www.walhr.com/api/public/index.php/api/v1/',
+    g_restUrl:'http://www.gxhxfc.com/api/public/index.php/api/v1/',
 
 
     
@@ -119,27 +119,6 @@ window.base={
         };
         this.getData(allParams)
     },
-
-    upLoadImg:function(param,callback) {
-    
-        $.ajax({ // $.post，告辞
-            type: 'post',
-            contentType: false, // 关关关！必须得 false
-                                // 这个不关会扔一个默认值 application/x-www-form-urlencoded 过去，后端拿不到数据的！
-                                // 而且你甚至不能传个字符串 'multipart/form-data'，后端一样拿不到数据！
-            processData: false, // 关关关！重点
-            url: 'http://fuxian.yisuiyanghuoguo.com/api/fuxian/public/index.php/api/v1/Base/FtpImage/uploadExcluedeToken',
-            data: param,
-            success:function(res){
-                callback && callback(res);
-            },
-            error:function(res){
-                callback && callback(res);
-            }
-        });
-
-    }, 
-
     loginUp:function(param,callback) {
     
         $.ajax({ // $.post，告辞
@@ -160,6 +139,197 @@ window.base={
 
     },
 
+/**************************房天下**********************************/
+ 
+    GetList:function(param,callback) {
+        var allParams = {
+            url:'UserArticle/GetList',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+
+    /************详情***********/
+    getArticle:function(param,callback) {
+        var allParams = {
+            url:'UserArticle/GetInfo',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    /************首页新房推荐***********/
+    NewRecomGetList:function(param,callback) {
+        var allParams = {
+            url:'UserContent/GetHomeTheme',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    /************新房列表***************/
+    NewHouseList:function(param,callback) {
+        var allParams = {
+            url:'UserNewHouse/GetList',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+
+    NewHouseArticle:function(param,callback) {
+        var allParams = {
+            url:'UserNewHouse/GetInfo',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    /**************二手房列表***************/
+    secondHouseList:function(param,callback) {
+        var allParams = {
+            url:'UserSecondHouse/GetList',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    },
+    secondHouseArticle:function(param,callback) {
+        var allParams = {
+            url:'UserSecondHouse/GetInfo',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    secondHouseSearch:function(param,callback) {
+        var allParams = {
+            url:'UserSecondHouse/HouseSort',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+
+    /**************出租房列表***************/
+    rentHouseList:function(param,callback) {
+        var allParams = {
+            url:'UserRentHouse/GetList',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    rentHouseArticle:function(param,callback) {
+        var allParams = {
+            url:'UserRentHouse/GetInfo',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    /*****************商铺************************/
+     UserShopsList:function(param,callback) {
+        var allParams = {
+            url:'UserShops/GetList',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    },
+    shopsHouseArticle:function(param,callback) {
+        var allParams = {
+            url:'UserShops/GetInfo',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    },
+     /*****************写字楼************************/
+     OfficeHouseList:function(param,callback) {
+        var allParams = {
+            url:'UserOffice/GetList',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    },
+     officeHouseArticle:function(param,callback) {
+        var allParams = {
+            url:'UserOffice/GetInfo',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    /*****************团购************************/
+    userGroupList:function(param,callback) {
+        var allParams = {
+            url:'UserGroup/GetList',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+
+    //发布租房房源
+     postRentHomeResouce:function(arrayData,solelyFun){
+      var params = {
+        type:'POST',
+        url:'UserRentHouse/Submit',
+        data:arrayData,
+        solely:function(data){
+          solelyFun &&　solelyFun(data);
+        },
+      }
+      window.base.RequestData(params);
+    },
 
     labelGet:function(param,callback) {
   

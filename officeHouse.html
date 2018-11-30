@@ -113,106 +113,32 @@
 				</div>
 			</div>
 			<div class="house_all">
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
+				<div class="house_list w710 flex" v-for="item in mainData">
+					<div class="house_list_cont flex" @click="intoPath(item.id)">
 						<div class="house_img">
-							<img src="images/1.jpg">
+							<img :src="item.mainImg&&item.mainImg.length>0?item.mainImg[0].url:''">
 						</div>
 						<div class="house_right">
 							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
+								<h4 class="font30 color3">{{item.name}}</h4>
+								<span class="font22 color9">[{{item.area}}]</span>
 							</div>
-							<div class="house_price flexRowBetween">
+							<div class="font24 color9 flex officeItem" style="height:26%;">
+								<span>{{item.officeClass}}</span>|
+								<span>{{item.decoration}}</span>|
+								<span>共{{item.floor}}层</span>|
+
+								<span>{{item.officeMode}}</span>
+
+							</div>
+							<div class="house_price flexRowBetween" style="height:26%;">
 								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
+									{{item.roomArea}}m²
 								</p>
-								<span class="font24 color">均价11000元/m²</span>
+								<span class="font24 color">均价{{item.unitPrice}}元/m²</span>
 							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
+							<div class="house_condition flex avoidOverflow" style="height:26%;">
+								{{item.address}}
 							</div>
 						</div>
 					</div>
@@ -231,14 +157,32 @@
             return {
             	isShow:999,
             	menuData:['区域','租金','面积','更多'],
+            	mainData:[],
             }
         },
         
         created: function () {
-
+        	const self = this;
+        	this.OfficeHouseList()
         },
-
         methods:{
+        	OfficeHouseList(){
+        		const self =this;
+        		var postData = {};
+        		 postData = {
+			       		"is_page":true,
+						"currentPage":1,
+						"pagesize":10,
+						"searchItem":{
+						//	"label":1
+					}
+			    };
+        		var callback = (res)=>{
+                    self.mainData = res.data; 
+                    console.log(self.mainData);
+                };
+        		window.base.OfficeHouseList(postData,callback);
+        	},
         	tab(e){
         		const self =this;
         		if(self.isShow == e){
@@ -246,6 +190,12 @@
         		}else{
         			self.isShow = e
         		}
+        	},
+        	intoPath(index){
+        		const self = this;
+        		console.log(index);
+                const art_id = index;
+                window.location.href = "./officeDetail.html?id=" + art_id;
         	}
         }
     });

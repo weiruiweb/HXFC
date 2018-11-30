@@ -130,6 +130,9 @@ div{
 .font24{
   font-size:0.24rem;
 }
+.font26{
+  font-size:0.26rem;
+}
 .font28{
   font-size:0.28rem;
 }
@@ -406,6 +409,7 @@ div{
   line-height:0.6rem;
   margin-top: 0.4rem;
   margin-right: 0.32rem;
+  font-size:0.24rem;
 }
 .qucik_color1{
   color:#6ac2e9;
@@ -526,6 +530,7 @@ div{
   width:80%;
   text-align:center;
   display: inline-block;
+  font-size:0.26rem;
 }
 .select_item .span2{
   width:20%;
@@ -555,6 +560,13 @@ div{
 .house_img img{
   width:2.26rem;
   height:1.74rem;
+}
+.decorater_img{
+  width:1.8rem;
+  height:1.8rem;
+  border-radius:50%;
+  overflow:hidden;
+  margin:0 auto;
 }
 .house_price {
   width:100%;
@@ -913,6 +925,7 @@ div{
   width:50%;
   height:0.74rem;
   line-height: 0.74rem;
+  overflow: hidden;
 }
 .call{
   height:1.5rem;
@@ -1082,4 +1095,8 @@ div{
 }
 .padding30{
   padding-bottom:0.3rem;
+}
+.officeItem span{
+  margin:0 0.06rem;
+  display: inline-block;
 }

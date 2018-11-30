@@ -34,27 +34,13 @@
 		</div>
 		<div class="decorateImg">
 			<div class="decorate_img w710 flexRowBetween" style="flex-wrap: wrap;">
-				<div class="recommend_left">
-					<div class="img1"><img src="images/1.jpg"></div>
-					<div class="decorate_img_detial flex bg">
-						<div class="decorate_detial w710">
-							星华海岸城
-						</div>
+				<div class="recommend_left" v-for="item in imgData">
+					<div class="img1">
+						<img :src="item.url">
 					</div>
-				</div>
-				<div class="recommend_left">
-					<div class="img1"><img src="images/1.jpg"></div>
 					<div class="decorate_img_detial flex bg">
 						<div class="decorate_detial w710">
-							星华海岸城
-						</div>
-					</div>
-				</div>
-				<div class="recommend_left">
-					<div class="img1"><img src="images/1.jpg"></div>
-					<div class="decorate_img_detial flex bg">
-						<div class="decorate_detial w710">
-							星华海岸城
+							{{item.name}}
 						</div>
 					</div>
 				</div>
@@ -71,14 +57,36 @@
         el: '#app',
         data: function() {
             return {
+            	mainData:[],
+            	imgData:[],
             }
         },
         
         created: function () {
-
+        	const self = this;
+        	self.getMainData();
         },
 
         methods:{
+        	getMainData(){
+        		const self =this;
+        	    var postData = {
+        	    	"thirdapp_id":1,
+					"id":window.base.GetRequest().id
+        	    };
+        		var callback = (res)=>{
+        			console.log(res);
+                        self.mainData = res; 
+                        if(self.mainData.bannerImg){
+                        	for(var i=0;i<self.mainData.bannerImg.length;i++){
+                        		self.imgData.push(self.mainData.bannerImg[i]);
+                        		self.imgData[i].name= self.mainData.bannerImg[i].name.split('.')[0];
+                        	}
+                        }
+
+                    };
+        		window.base.getArticle(postData,callback);
+        	},
 
         }
     });

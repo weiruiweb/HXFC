@@ -21,19 +21,19 @@
 			<div class="main">
 				<div class="input_list1 font28 flex">
 					<div class="input_before">小区名称:</div>
-					<input placeholder="请输入小区名称"/>
+					<input placeholder="请输入小区名称" v-model='submitData.name'/>
 				</div>
 				<div class="input_list1 font28 flex">
 					<div class="input_before">建筑类型:</div>
-					<input placeholder="请输入建筑类型"/>
+					<input placeholder="请输入建筑类型" v-model='submitData.type'/>
 				</div>
 				<div class="input_list1 font28 flex">
 					<div class="input_before">地址:</div>
-					<input placeholder="请输入地址"/>
+					<input placeholder="请输入地址" v-model='submitData.address'/>
 				</div>
 				<div class="input_list1 font28 flex">
 					<div class="input_before">年代:</div>
-					<input placeholder="请输入年代"/>
+					<input placeholder="请输入年代" v-model='submitData.years'/>
 				</div>
 				<div class="input_list1 font28 flex" style="border:none;">
 					<div class="input_before">户型:</div>
@@ -56,7 +56,7 @@
 					<div class="input_before">建筑面积:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item flexRowBetween radius10">
-							<input placeholder=""/>
+							<input placeholder="" v-model='submitData.area'/>
 							<span>m²</span>
 						</div>
 					</div>
@@ -66,7 +66,7 @@
 					<div class="input flexRowBetween">
 						<div class="input_item flexRowBetween radius10">
 							<span>第</span>
-							<input placeholder=""/>
+							<input placeholder="" v-model='submitData.floor'/>
 							<span>层</span>
 						</div>
 						<div class="input_item flexRowBetween radius10">
@@ -98,7 +98,7 @@
 				<div class="input_list1 font28 flex"  style="border:none;">
 					<div class="input_before">朝向:</div>
 					<div class="input">
-						<select class="send_select" value="南北朝向">
+						<select class="send_select" v-model="submitData.direction" v-model='submitData.direction'>
 							<option value="南北朝向"></option>
 							<option value="南北朝向">南北朝向</option>
 							<option value="南北朝向">南北朝向</option>
@@ -111,7 +111,7 @@
 					<div class="input_before">售价:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item flexRowBetween radius10" style="width:2rem;">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.totalPrice"/>
 							<span>万</span>
 						</div>
 					</div>
@@ -120,10 +120,10 @@
 					<div class="input_before">称呼:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item radius10" style="width:2rem;">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.publisher"/>
 						</div>
 						<div class="gender flex">
-							<label><input type="radio" name="radio" value="1" style="width:auto;height:auto">男 </label> 
+							<label><input type="radio" name="radio" value="1" style="width:auto;height:auto" value="submitData.gender">男 </label> 
 							<label><input name="女" type="radio" value="" style="width:auto;height:auto"/>女 </label> 
 						</div>
 					</div>
@@ -132,7 +132,7 @@
 					<div class="input_before">手机号:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item radius10" style="width:3.5rem;">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.phone"/>
 						</div>
 					</div>
 				</div>
@@ -145,7 +145,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="submit_info" style="margin:0.3rem auto">确认发布</div>
+				<div class="submit_info" style="margin:0.3rem auto" @click="sendHouse">确认发布</div>
 			</div>
 		</div>
 	</div>
@@ -159,15 +159,47 @@
         el: '#app',
         data: function() {
             return {
+        	submitData:{
+				token:"9098b27fd4556234be57f1bd486caeef",
+		        name:'',
+		        type:'',
+		        address:'',
+		        years:'',
+		        layout:'',
+		        area:'',
+		        floor:'',
+		        direction:'',
+		        totalPrice:'',
+		        publisher:'',
+		        phone:'',
+		        gender:'',
+				},
             }
         },
         
         created: function () {
-
+        	const self = this;
+        	self.sendHouse();
         },
 
         methods:{
-
+        	sendHouse(){
+        		const self = this;
+        		console.log(999,self.submitData);
+	            const postData = {};
+	            postData = {
+					submit:self.submitData
+			    };
+	            const callback = (res)=>{
+	             	if(res.solely_code==100000){
+						alert('提交成功');
+						window.location.reload();
+					}else{
+						alert('网络故障')
+					}
+	            };
+	             window.base.postRentHomeResouce(postData,callback);
+        	},
         }
     });
             

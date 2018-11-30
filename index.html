@@ -105,14 +105,14 @@
 			  	<a class="w32 flex radius20" style="background:#f1f7f8">
 					<div class="recommdent_item">
 					    <span><img src="images/index_icon4.png"/></span>
-					    <h4 class="font28 color3">热门楼盘</h4>
+					    <h4 class="font28 color3">特价房</h4>
 					    <p class="font20"  style="color:#7fcada">投资自住皆宜</p>
 					</div>
 			  	</a>
 			  	<a class="w32 flex radius20" style="background:#faf7f8">
 					<div class="recommdent_item">
 					    <span><img src="images/index_icon4.png"/></span>
-					   <h4 class="font28 color3">热门楼盘</h4>
+					   <h4 class="font28 color3">团购房</h4>
 					    <p  class="font20" style="color:#ee9397">投资自住皆宜</p>
 					</div>
 			  	</a>
@@ -173,94 +173,36 @@
 		</div>
 		<div class="newHouse w710">
 			<h3 class="font36 color3 bottom30" style="margin-top:0.5rem;">新房推荐</h3>
-			<div class="new_item">
-				<div class="house_tlt font32 color1">
-					<div class="sell_status color1">在售</div>
-				</div>
-				<div class="house_cont">
-					<div class="new_house_box flex">
-						<img src="images/1.jpg" />
-						<div class="new_house_detail w710">
-							<div class="house_name flexRowBetween">
-								<p class="font32 color1">陕西省西安市雁塔区</p>
-								<p class="font30 color">均价：2500元/m²</p>
-							</div>
-							<div class="house_address color1 font28">
-								陕西省西安市雁塔区
+			<div v-for="item in newHouseData">
+				<div class="new_item">
+					<div class="house_tlt font32 color1">
+						<div class="sell_status color1">在售</div>
+					</div>
+					<div class="house_cont">
+						<div class="new_house_box flex">
+							<img src="images/1.jpg" />
+							<div class="new_house_detail w710">
+								<div class="house_name flexRowBetween">
+									<p class="font32 color1">{{item.relationinfo.name}}</p>
+									<p class="font30 color">均价：{{item.relationinfo.unitPrice}}元/m²</p>
+								</div>
+								<div class="house_address color1 font28 avoidOverflow">
+									{{item.relationinfo.address}}
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="discount w710 flex">
-				<div class="discount_left">
-					<img src="images/index_icon11.png" />
-					<span class="font28 color">赠送两年物业费</span>
-				</div>
-				<div class="discount_right">
-					<a class="discount_btn font28 color radius20">
-						获取优惠
-					</a>
-				</div>
-			</div>
-			<div class="new_item">
-				<div class="house_tlt font32 color1">
-					<div class="sell_status color1">在售</div>
-				</div>
-				<div class="house_cont">
-					<div class="new_house_box flex">
-						<img src="images/1.jpg" />
-						<div class="new_house_detail w710">
-							<div class="house_name flexRowBetween">
-								<p class="font32 color1">陕西省西安市雁塔区</p>
-								<p class="font30 color">均价：2500元/m²</p>
-							</div>
-							<div class="house_address color1 font28">
-								陕西省西安市雁塔区
-							</div>
-						</div>
+				<div class="discount w710 flex">
+					<div class="discount_left flex">
+						<img src="images/index_icon11.png" />
+						<span class="font28 color">赠送两年物业费</span>
 					</div>
-				</div>
-			</div>
-			<div class="discount w710 flex">
-				<div class="discount_left">
-					<img src="images/index_icon11.png" />
-					<span class="font28 color">赠送两年物业费</span>
-				</div>
-				<div class="discount_right">
-					<a class="discount_btn font28 color radius20">
-						获取优惠
-					</a>
-				</div>
-			</div>
-			<div class="new_item">
-				<div class="house_tlt font32 color1">
-					<div class="sell_status color1">在售</div>
-				</div>
-				<div class="house_cont">
-					<div class="new_house_box flex">
-						<img src="images/1.jpg" />
-						<div class="new_house_detail w710">
-							<div class="house_name flexRowBetween">
-								<p class="font32 color1">陕西省西安市雁塔区</p>
-								<p class="font30 color">均价：2500元/m²</p>
-							</div>
-							<div class="house_address color1 font28">
-								陕西省西安市雁塔区
-							</div>
-						</div>
+					<div class="discount_right">
+						<a class="discount_btn font28 color radius20">
+							获取优惠
+						</a>
 					</div>
-				</div>
-			</div>
-			<div class="discount w710 flex">
-				<div class="discount_left">
-					<img src="images/index_icon11.png" />
-					<span class="font28 color">赠送两年物业费</span>
-				</div>
-				<div class="discount_right">
-					<a class="discount_btn font28 color radius20">
-						获取优惠
-					</a>
 				</div>
 			</div>
 		</div>
@@ -307,14 +249,38 @@
             return {
             	is_show:false,
             	is_up:false,
+            	newHouseData:[],
             }
         },
         
         created: function () {
-
+        	const self =this;
+        	self.getNewHouse();
         },
 
         methods:{
+        	getNewHouse(){
+        		const self =this;
+        		var postData = {};
+        		 postData = {
+			       "thirdapp_id":1,
+					"searchItem":{
+						"0":{
+							"theme_id":10,
+							"num":10
+						}
+					}
+			    };
+        		console.log(111,postData);
+        		var callback = (res)=>{
+                        self.newHouseData = res[0];
+                        console.log(21,res);
+                        console.log(22,self.newHouseData);
+                    };
+        		
+        		console.log(22,self.newHouseData);
+        		window.base.NewRecomGetList(postData,callback);
+        	},
         	appoint:function(e){
         		const self = this;
         		self.is_show = !self.is_show;

@@ -18,7 +18,7 @@
 <div id="app">
 	<div class="w750">
 		<div class="banner2">
-			<img src="images/1.jpg" />
+			<img :src="mainData.mainImg&&mainData.mainImg.length>0?mainData.mainImg[0].url:''">
 		</div>
 		<div class="">
 			<h3 class="houseTitle font32 color3 w710 border_c">
@@ -30,17 +30,16 @@
 					<div class="call_right flex" style="width:22%;">
 						租金
 					</div>
-					<div class="" style="width:78%">
-						<p class="font34 color font36">5544554<span class="font22 color9">月/元(包含预约费)</span></p>
-						<p class="font24 color9"><span class="color">6</span>月/平米.元(包含预约费)</p>
+					<div class="" style="width:78%;height:0.52rem;line-height:0.52rem;">
+						<p class="font34 color font36">{{mainData.unitPrice}}<span class="font22 color9">月/元(包含预约费)</span></p>
 					</div>
 				</div>
-				<div class="call_cont flex">
+				<div class="call_cont flex" style="height:0.32rem;line-height:0.32rem;">
 					<div class="call_right flex" style="width:22%;">
 						建筑面积：
 					</div>
 					<div class="" style="width:78%">
-							44664平米
+							{{mainData.roomArea}}平米
 					</div>
 				</div>
 			</div>
@@ -53,38 +52,34 @@
 			<div class="detail_show w710 flex">
 				<div class="detail_show_left" style="width:100%;">
 					<span class="font30 color9">楼盘名称：</span>
-					<span class="font30 color3">15535/平</span>
+					<span class="font30 color3">{{mainData.name}}</span>
 				</div>
 				<div class="detail_show_left" style="width:100%;">
 					<span class="font30 color9">楼盘地址：</span>
-					<span class="font30 color3">2018.2.2</span>
+					<span class="font30 color3">{{mainData.address}}</span>
 				</div>
 				<div class="detail_show_left">
 					<span class="font30 color9">所在楼层：</span>
-					<span class="font30 color3">向南</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">物业费：</span>
-					<span class="font30 color3">高层/16层</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">等级：</span>
-					<span class="font30 color3">板塔结合</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">装修：</span>
-					<span class="font30 color3">精修</span>
+					<span class="font30 color3">{{mainData.floor}}</span>
 				</div>
 				<div class="detail_show_left">
 					<span class="font30 color9">类型：</span>
-					<span class="font30 color3">2013年</span>
+					<span class="font30 color3">{{mainData.shopMode}}</span>
+				</div>
+				<div class="detail_show_left">
+					<span class="font30 color9">优势：</span>
+					<span class="font30 color3">{{mainData.characterLabel}}</span>
+				</div>
+				<div class="detail_show_left">
+					<span class="font30 color9">设施：</span>
+					<span class="font30 color3">{{mainData.facilities}}</span>
 				</div>
 			</div>
 			<div class="house_detail_tlt w710 color font36">
 				楼盘动态
 			</div>
-			<div class="font24 color6 w710">
-				楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态
+			<div class="font24 color6 w710" v-html="mainData.description">
+				
 			</div>
 			<div class="house_detail_tlt w710 color font36">
 				房源
@@ -112,22 +107,33 @@
 				</div>
 			</div>
 		</div>
+	</div>
 </div>
-
 <script type="text/javascript">      
     var app = new Vue({
         el: '#app',
         data: function() {
             return {
+            	mainData:[],
             }
         },
-        
         created: function () {
-
+        	const self = this;
+        	self.getMainData();
         },
 
         methods:{
-
+        	getMainData(){
+        		const self = this;
+        		var postData = {
+					"id":window.base.GetRequest().id
+        	    };
+        	    var callback = (res)=>{
+        			console.log(res);
+                    self.mainData = res; 
+                    };
+        		window.base.officeHouseArticle(postData,callback);
+        	},
         }
     });
             

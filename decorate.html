@@ -29,68 +29,44 @@
 			</div>
 		</div>
 		<div class="decorateImg" :style="isShow == 0?'display:block':'display:none'">
-			<a class="decorate_img w710"  href="decorateDetail.html">
-				<div class="img1"><img src="images/1.jpg"></div>
+			<a class="decorate_img w710" :data-id="item.id"  @click="intoPath(item.id)"  v-for="(item,index) in mainData">
+				<div class="img1">
+					<img :src="item.img&&item.img.length>0?item.img[0].url:''">
+				</div>
 				<div class="decorate_img_detial flex bg" style="height:1.5rem;line-height: normal;">
 					<div class="decorate_detial w710">
 						<div class="flex">
-							<div class="font32 color3 avoidOverflow" style="width:50%;">星华海岸城</div>
-							<div class="font28 color6 avoidOverflow textARr" style="width:50%;">星华海岸城</div>
+							<div class="font32 color3 avoidOverflow" style="width:50%;">{{item.title}}</div>
+							<div class="font28 color6 avoidOverflow textARr" style="width:50%;">{{item.keywords}}</div>
 						</div>
 						<div class="flex">
-							<div class="font24 color6 avoidOverflow" style="width:50%;">其他/五居室/263m²</div>
-							<div class="font28 color6 avoidOverflow textARr" style="width:50%;">星华海岸城</div>
+							<div class="font24 color6 avoidOverflow">{{item.description}}</div>
+							
 						</div>
 					</div>
 				</div>
 			</a>
 		</div>
 		<div class="decorater" :style="isShow == 1?'display:block':'display:none'">
-			<div class="decorate_list flex border_c">
+			<div class="decorate_list flex border_c" v-for="item in decoraterData">
 				<div class="decorate_list_box flex">
 					<div class="decorate_left flex">
 						<div class="house_img">
-							<img src="images/1.jpg">
+							<div class="decorater_img">
+								<img :src="item.img[0].url">
+							</div>
 						</div>
 						<div class="house_right">
 							<div class="flex houseName">
-								<h4 class="font30 color3">林安华</h4>
+								<h4 class="font30 color3">{{item.title}}</h4>
 								<span class="font22 color1 bg1">实名</span>
 							</div>
 							<div class="house_price font24 color8 flex">
-								16年从业时间					
+								{{item.description}}					
 							</div>
-							<p class="font24 color8" style="height:20%">40.0-120.0元/m²</p>
+							<p class="font24 color8" style="height:20%">{{item.keywords}}/m²</p>
 							<p class="house_condition flex" style="height:20%;">
-								鲁班装饰公司总部
-							</p>
-						</div>
-					</div>
-					<div class="decorate_right flex">
-						<div>
-							<img src="images/index_icon3.png" />
-							<a class="decorate_now color font22">找他设计</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="decorate_list flex border_c">
-				<div class="decorate_list_box flex">
-					<div class="decorate_left flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">林安华</h4>
-								<span class="font22 color1 bg1">实名</span>
-							</div>
-							<div class="house_price font24 color8 flex">
-								16年从业时间					
-							</div>
-							<p class="font24 color8" style="height:20%">40.0-120.0元/m²</p>
-							<p class="house_condition flex" style="height:20%;">
-								鲁班装饰公司总部
+								{{item.small_title}}
 							</p>
 						</div>
 					</div>
@@ -170,15 +146,58 @@
             return {
             	isShow:0,
             	is_show:false,
-            	menuData:['装修效果图','预约设计师']
+            	menuData:['装修效果图','预约设计师'],
+            	mainData:[],
+            	decoraterData:[],
             }
         },
         
         created: function () {
-
+        	const self = this;
+        	self.getMainData();
+        	self.getMainDecorater();
         },
 
         methods:{
+        	getMainData(){
+        		const self =this;
+        		var postData = {};
+        		 postData = {
+		       		"is_page":true,
+					"currentPage":1,
+					"pagesize":10,
+					"searchItem":{
+				        "thirdapp_id":1,
+				        "menu_id":30
+					}
+			    };
+        		console.log(111,postData);
+        		var callback = (res)=>{
+        			console.log(21,res);
+                        self.mainData = res.data; 
+                        console.log(111,self.mainData);
+                    };
+        	
+        		window.base.GetList(postData,callback);
+        	},
+        	getMainDecorater(){
+        		const self =this;
+        		var postData = {};
+        		 postData = {
+		       		"is_page":true,
+					"currentPage":1,
+					"pagesize":10,
+					"searchItem":{
+				        "thirdapp_id":1,
+				        "menu_id":31
+					}
+			    };
+        		var callback = (res)=>{
+                    self.decoraterData = res.data; 
+                    console.log(112,self.decoraterData);
+                };
+        		window.base.GetList(postData,callback);
+        	},
         	freeDesign:function(e){
         		const self =this;
         		self.is_show = !self.is_show;
@@ -187,12 +206,16 @@
         	tab(e){
         		const self =this;
       			self.isShow = e
-  
+        	},
+        	intoPath(index){
+        		const self =this;
+        		var art_id= index;
+        		window.location.href="./decorateDetail.html?id="+art_id;
         	},
         	cancel:function(e){
         		const self = this;
         		self.is_show = false;
-        	}
+        	},
         }
     });
             

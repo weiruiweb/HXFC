@@ -42,10 +42,10 @@
 						<img src="images/up2.png" style="left:12.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3">不限</div>
-						<div class="select_lines font30 color3">海城区</div>
-						<div class="select_lines font30 color3">海港区</div>
-						<div class="select_lines font30 color3">银海区</div>
+						<div class="select_lines font30 color3" data-area="不限">不限</div>
+						<div class="select_lines font30 color3" data-area="海城区">海城区</div>
+						<div class="select_lines font30 color3" data-area="海港区">海港区</div>
+						<div class="select_lines font30 color3" data-area="海港区">银海区</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
@@ -53,10 +53,12 @@
 						<img src="images/up2.png" style="left:37.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3">8000</div>
-						<div class="select_lines font30 color3">9000</div>
-						<div class="select_lines font30 color3">15000</div>
-						<div class="select_lines font30 color3">17000</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="40" data-ltotalPrice="50" @click="search">40万~50万</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="50" data-ltotalPrice="60" @click="search">50万~60万</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="60" data-ltotalPrice="90" @click="search">60万~90万</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="90" data-ltotalPrice="120" @click="search">90万~120万</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="120" data-ltotalPrice="150" @click="search">120万~150万</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="" data-ltotalPrice="150" @click="search">150平以上</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 2?'display:block':'display:none'">
@@ -75,244 +77,32 @@
 						<img src="images/up2.png"  style="left:86.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3">不限</div>
-						<div class="select_lines font30 color3">100平米</div>
-						<div class="select_lines font30 color3">120平米</div>
-						<div class="select_lines font30 color3">140平米</div>
+						<div class="select_lines font30 color3" data-groomArea="" data-lroomArea="">不限</div>
+						<div class="select_lines font30 color3" data-groomArea="60" data-lroomArea="80">60~80平米</div>
+						<div class="select_lines font30 color3" data-groomArea="80" data-lroomArea="100">80~100平米</div>
+						<div class="select_lines font30 color3"  data-groomArea="100" data-lroomArea="120">100~120平米</div>
 					</div>
 				</div>
 			</div>
 			<div class="house_all">
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
+				<div class="house_list w710 flex" v-for="(item,index) in mainData">
+					<div class="house_list_cont flex" @click="intoPath(item.id)">
 						<div class="house_img">
-							<img src="images/1.jpg">
+							<img :src="item.mainImg&&item.mainImg.length>0?item.mainImg[0].url:''">
 						</div>
 						<div class="house_right">
 							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
+								<h4 class="font30 color3">{{item.name}}</h4>
+								<span class="font22 color9">{{item.area}}</span>
 							</div>
 							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
+								<p class="font24">
+									{{item.roomArea}}m²
 								</p>
-								<span class="font24 color">均价11000元/m²</span>
+								<span class="font24 color">均价{{item.unitPrice}}元/m²</span>
 							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="house_list w710 flex">
-					<div class="house_list_cont flex">
-						<div class="house_img">
-							<img src="images/1.jpg">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">碧桂园·北纬21°</h4>
-								<span class="font22 color9">[银海区]</span>
-							</div>
-							<div class="house_price flexRowBetween">
-								<p>
-									<span class="font28 color3">4.5分</span>
-									<span class="font24 color6">140评分</span>
-								</p>
-								<span class="font24 color">均价11000元/m²</span>
-							</div>
-							<p class="font24 color9" style="height:20%">73~93平米</p>
-							<div class="house_condition flex" style="height:20%;">
-								<p class="font24 bg">普通住宅</p>
-								<p class="font24 bg">花园洋房</p>
-								<p class="font24 bg">普通住宅</p>
+							<div class="house_condition flex" style="height:40%;">
+								{{item.address}}
 							</div>
 						</div>
 					</div>
@@ -331,14 +121,77 @@
             return {
             	isShow:999,
             	menuData:['区域','价格','户型','面积'],
+            	mainData:[],
+     //        	searchData:{
+     //        		name:"",//name字段会模糊匹配
+					// gtotalPrice:'',//搜索总价>=50万的
+					// ltotalPrice:'', //搜索总价<=60万的
+					// groomArea:'', //搜索面积>=40平米的
+					// lroomArea:''//搜索面积<=100平米的
+     //        	},
+
             }
         },
-        
         created: function () {
-
+        	const self = this;
+        	self.secondHouseList();
         },
 
         methods:{
+        	secondHouseList(){
+        		const self =this;
+        		var postData = {};
+        		 postData = {
+			       		"is_page":true,
+						"currentPage":1,
+						"pagesize":10,
+						"searchItem":{
+						//	"label":1
+					}
+			    };
+        		console.log(111,postData);
+        		var callback = (res)=>{
+        			console.log(21,res);
+                        self.mainData = res.data; 
+                        console.log(self.mainData);
+                    };
+        	
+        		window.base.secondHouseList(postData,callback);
+        	},
+        	search(e){
+        		const self =this;
+        		self.mainData = [];
+        		var dataSet = window.base.getDataSet(e);
+        		console.log(888,dataSet);
+        		console.log(999,dataSet.gtotalprice);
+        		var gtotalPrice = dataSet.gtotalprice;
+        		var ltotalprice = dataSet.ltotalprice;
+        		var groomArea = dataSet.gtotalprice;
+        		var lroomArea = dataSet.ltotalprice;
+        		console.log(1000,ltotalprice);
+        		var postData = {};
+        		 postData = {
+					"is_page":true,
+					"currentPage":1,
+					"pagesize":2,
+					"sortby":"unitPrice",//排序字段：单价unitPrice，总价totalPrice
+					"sort":"desc",//顺序：正序asc;倒序desc;
+					"searchItem":{
+						"gtotalPrice":gtotalPrice,//搜索总价>=50万的
+						"ltotalPrice":ltotalprice, //搜索总价<=60万的
+						"groomArea":80,
+						"lroomArea":90,
+					}
+				}
+        		console.log(111,postData);
+        		var callback = (res)=>{
+        			console.log(21,res);
+                        self.mainData = res.data; 
+                        console.log(self.mainData);
+                        self.isShow = 999;
+                    };
+        		window.base.secondHouseSearch(postData,callback);
+        	},
         	tab(e){
         		const self =this;
         		if(self.isShow == e){
@@ -346,7 +199,13 @@
         		}else{
         			self.isShow = e
         		}
-        	}
+        	},
+        	intoPath(index){
+        		const self = this;
+        		console.log(index);
+                const art_id = index;
+                window.location.href = "./secondDetail.html?id=" + art_id;
+        	},
         }
     });
             

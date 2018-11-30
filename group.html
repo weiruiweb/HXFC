@@ -42,23 +42,24 @@
 		      	<span class="font22 color9">看房得实惠 </span>
 		      </div>
 		  </div>
-		  <div class="group_list bottom20">
+		  <div class="group_list bottom20" v-for="item in mainData">
 			  <div class="group_tlt flex">
-			  	<span class="font30 color3">【2018-08-22】</span>
-			  	<span class="font30 color3">天天看房团</span>
+			  	<span class="font30 color3">【{{item.create_time}}】</span>
+			  	<span class="font30 color3">{{item.name}}</span>
 			  </div>
 			  <div class="w710">
 			  	<div class="font24 lines">
 			  		<span class="color6">看房路线：</span>
-			  		<a class="color3">融侨观邸</a>
 			  		<span class="color3 right1">→</span>
-			  		<a class="color3">融侨观邸</a>
-			  		<span class="color3  right1">→</span>
-			  		<a class="color3">融侨观邸</a>
+			  		<a class="color3">{{item.scanRoute}}</a>
 			  	</div>
 			  	<div class="font24 lines">
 			  		<span class="color6">楼盘优惠：</span>
-			  		<a class="color3">融侨观邸</a>
+			  		<a class="color3">{{item.service}}</a>
+			  	</div>
+			  	<div class="font24 lines">
+			  		<span class="color6">集合信息：</span>
+			  		<a class="color3">{{item.aggregateInfo}}</a>
 			  	</div>
 			  	<div class="font24 lines flex">
 			  		<span class="color6">承诺服务：</span>
@@ -78,43 +79,6 @@
 			  </div>
 			  <div class="submit_info" style="margin-top:0.3rem;margin-bottom:0.3rem;">免费报名</div>
 		  </div>
-		  <div class="group_list bottom20">
-			  <div class="group_tlt flex">
-			  	<span class="font30 color3">【2018-08-22】</span>
-			  	<span class="font30 color3">天天看房团</span>
-			  </div>
-			  <div class="w710">
-			  	<div class="font24 lines">
-			  		<span class="color6">看房路线：</span>
-			  		<a class="color3">融侨观邸</a>
-			  		<span class="color3 right1">→</span>
-			  		<a class="color3">融侨观邸</a>
-			  		<span class="color3  right1">→</span>
-			  		<a class="color3">融侨观邸</a>
-			  	</div>
-			  	<div class="font24 lines">
-			  		<span class="color6">楼盘优惠：</span>
-			  		<a class="color3">融侨观邸</a>
-			  	</div>
-			  	<div class="font24 lines flex">
-			  		<span class="color6">承诺服务：</span>
-			  		<div class="service flex">
-			  			<img src="images/group_icon1.png">
-			  			<a class="color9 font22">全程免费</a>
-			  		</div>
-			  		<div class="service flex">
-			  			<img src="images/group_icon2.png">
-			  			<a class="color9 font22">一对一带看</a>
-			  		</div>
-			  		<div class="service flex">
-			  			<img src="images/group_icon3.png">
-			  			<a class="color9 font22">全天在线咨询</a>
-			  		</div>
-			  	</div>
-			  </div>
-			  <div class="submit_info" style="margin-top:0.3rem;margin-bottom:0.3rem;">免费报名</div>
-		  </div>
-
 		</div>
 	</div>
 </div>
@@ -127,15 +91,32 @@
         el: '#app',
         data: function() {
             return {
+            	mainData:[],
             }
         },
         
         created: function () {
-
+        	const self = this;
+        	self.userGroupList();
         },
-
         methods:{
-
+        	userGroupList(){
+        		const self =this;
+        		var postData = {};
+        		 postData = {
+			       		"is_page":true,
+						"currentPage":1,
+						"pagesize":10,
+						"searchItem":{
+						//	"label":1
+					}
+			    };
+        		var callback = (res)=>{
+                    self.mainData = res.data; 
+                    console.log(self.mainData);
+                };
+        		window.base.userGroupList(postData,callback);
+        	},
         }
     });
             

@@ -22,8 +22,8 @@
 		</div>
 		<div class="">
 			<h3 class="houseTitle font32 color3 w710 border_c">
-				碧桂园·北纬21°
-				<span class="font22 color6">[银海区]</span>
+				{{mainData.name}}
+				<span class="font22 color6">[{{mainData.area}}]</span>
 			</h3>
 			<div class="menu1 flexRowBetween font24 color6 border_c">
 			  <a class="menu_item flex">
@@ -60,57 +60,37 @@
 			<div class="detail_show w710 flex">
 				<div class="detail_show_left">
 					<span class="font30 color9">单价：</span>
-					<span class="font30 color3">15535/平</span>
+					<span class="font30 color3">{{mainData.unitPrice}}/平</span>
 				</div>
 				<div class="detail_show_left">
 					<span class="font30 color9">挂牌：</span>
-					<span class="font30 color3">2018.2.2</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">朝向：</span>
-					<span class="font30 color3">向南</span>
+					<span class="font30 color3">{{mainData.create_time}}</span>
 				</div>
 				<div class="detail_show_left">
 					<span class="font30 color9">楼层：</span>
-					<span class="font30 color3">高层/16层</span>
+					<span class="font30 color3">高层/{{mainData.mainLayout}}层</span>
 				</div>
 				<div class="detail_show_left">
 					<span class="font30 color9">楼型：</span>
-					<span class="font30 color3">板塔结合</span>
+					<span class="font30 color3">{{mainData.characterLabel}}</span>
+				</div>
+				<div class="detail_show_left" style="width:100%;">
+					<span class="font30 color9">开发商：</span>
+					<span class="font30 color3">{{mainData.alias}}</span>
+				</div>
+				<div class="detail_show_left"  style="width:100%;">
+					<span class="font30 color9">地址：</span>
+					<span class="font30 color3">{{mainData.address}}</span>
 				</div>
 				<div class="detail_show_left">
-					<span class="font30 color9">电梯：</span>
-					<span class="font30 color3">3户2梯</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">装修：</span>
-					<span class="font30 color3">精修</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">年代：</span>
-					<span class="font30 color3">2013年</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">用途：</span>
-					<span class="font30 color3">普通住宅</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">权属：</span>
-					<span class="font30 color3">商品房</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">首付预算：</span>
-					<span class="font30 color3">咨询经济人</span>
-				</div>
-				<div class="detail_show_left">
-					<span class="font30 color9">小区：</span>
-					<span class="font30 color3">东方罗马家园</span>
+					<span class="font30 color9">开盘时间：</span>
+					<span class="font30 color3">{{mainData.recentOpening}}</span>
 				</div>
 			</div>
 			<div class="call w710 flexRowBetween border_c">
 				<div class="call_cont flex">
 					<div class="call_left">
-						<p class="font34 color">售楼处： 0894-32269385</p>
+						<p class="font34 color">售楼处： {{mainData.phone}}</p>
 						<p class="font24 color9">最新政策，更多优惠详情，请致电售楼部</p>
 					</div>
 					<div class="call_right flex">
@@ -122,26 +102,20 @@
 				楼盘动态
 			</div>
 			<div class="font24 color6 w710">
-				楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态楼盘动态
+				{{mainData.description}}
 			</div>
 			<div class="house_detail_tlt w710 color font36">
 				相册
 			</div>
 			<div class="decorateImg w710">
 				<div class="decorate_img w710 flexRowBetween" style="flex-wrap: wrap;">
-					<div class="recommend_left">
-						<div class="img1"><img src="images/1.jpg"></div>
+					<div class="recommend_left" v-for="item in album">
+						<div class="img1">
+							<img :src="item.url">
+						</div>
 						<div class="decorate_img_detial flex bg">
 							<div class="decorate_detial w100">
-								星华海岸城
-							</div>
-						</div>
-					</div>
-					<div class="recommend_left">
-						<div class="img1"><img src="images/1.jpg"></div>
-						<div class="decorate_img_detial flex bg">
-							<div class="decorate_detial  w100">
-								星华海岸城
+								{{item.name}}
 							</div>
 						</div>
 					</div>
@@ -152,7 +126,7 @@
 			</div>
 			<div class="decorateImg w710">
 				<div class="decorate_img w710 flexRowBetween" style="flex-wrap: wrap;">
-					<div class="recommend_left" style="margin:0">
+					<div class="recommend_left" style="margin:0" >
 						<div class="img1"><img src="images/1.jpg"></div>
 						<div class="decorate_img_detial flex">
 							<div class="decorate_detial w100 flexRowBetween">
@@ -212,14 +186,65 @@
         data: function() {
             return {
             	is_show:false,
+            	mainData:[],
+            	album:[],
+            	albumTwo:[],
+            	albumName:[],
             }
         },
         
         created: function () {
+        	const self = this;
+        	this.getMainData();
 
         },
 
         methods:{
+        	getMainData(){
+        		const self = this;
+        		var postData = {
+					"id":window.base.GetRequest().id
+        	    };
+        	    var callback = (res)=>{
+        			console.log(res);
+                    self.mainData = res; 
+                     if(self.mainData.album){
+                     	for(var i=0;i<self.mainData.album.length;i++){
+                     		self.album.push(self.mainData.album[i]);
+                     		if(self.mainData.album[i].name){
+                     			if(self.mainData.album[i].name.indexOf(".")!=-1) {
+                     				self.mainData.album[i].name = self.mainData.album[i].name.split('.')[0];
+                     			}
+
+                     		}
+                     	}
+                     }
+                     // if(self.mainData.album){
+                     // 	for(var i=0;i<self.mainData.album.length;i++){
+                     // 		self.album.push(self.mainData.album[i]);
+                     // 		console.log(999,self.album);
+                     // 		if(self.mainData.album[i].name){
+                     // 			if(self.mainData.album[i].name.indexOf(".")!=-1) {
+                     // 				console.log(0);
+                     // 				var imgName = self.mainData.album[i].name.split('.')[0];
+                     // 				self.album.push(imgName);
+                     // 			}
+
+                     // 		}
+                     // 	}
+                     // }
+                     // console.log(999,self.album)
+                     // for(var j=0;j<self.album.length;j++){
+                     // 	if(j%2==0){
+                     		
+                     // 		self.albumTwo.push(self.album.slice(j,j+2))
+                     // 		console.log(1000,self.albumTwo);
+                     // 	}
+                     // 	console.log(1000,self.albumTwo);
+                     // }
+                    };
+        		window.base.NewHouseArticle(postData,callback);
+        	},
         	appoint:function(e){
         		const self = this;
         		self.is_show = !self.is_show;
