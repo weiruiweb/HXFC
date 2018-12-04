@@ -20,9 +20,9 @@
 		<div style="position: fixed;top:0;background:#fff;z-index:999;width:100%;">
 			<div class="search_second w710 flex" style="margin-top: 0.2rem;margin-bottom: 0.2rem;z-index:99">
 			    <div class="search_right flex font28 color6 bg" style="width:100%;">
-			    	<input type="" style="width:88%;" class="bg" name="" placeholder="请输入楼盘名称、附近商圈、地铁"/>
-				      <div class="search_btn flex bg" style="width:12%">
-				       <img src="images/search.png">
+			    	<input type="" style="width:88%;" class="bg" name="" placeholder="请输入楼盘名称" v-model="search_name"/>
+				      <div class="search_btn flex bg" style="width:12%" @click="searchName">
+				        <img src="images/search.png">
 				      </div>
 			    </div>
 			</div>
@@ -42,10 +42,12 @@
 						<img src="images/up2.png" style="left:12.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3" data-area="不限">不限</div>
-						<div class="select_lines font30 color3" data-area="海城区">海城区</div>
-						<div class="select_lines font30 color3" data-area="海港区">海港区</div>
-						<div class="select_lines font30 color3" data-area="海港区">银海区</div>
+						<div class="select_lines font30 color3" @click="search">不限</div>
+						<div class="select_lines font30 color3" data-area="海城区"  @click="search">海城区</div>
+						<div class="select_lines font30 color3" data-area="银海区"  @click="search">银海区</div>
+						<div class="select_lines font30 color3" data-area="铁山港"  @click="search">铁山港</div>
+						<div class="select_lines font30 color3" data-area="海城区"  @click="search">合浦县</div>
+						<div class="select_lines font30 color3" data-area="银海区"  @click="search">其他</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
@@ -66,10 +68,10 @@
 						<img src="images/up2.png"  style="left:61.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3">不限</div>
-						<div class="select_lines font30 color3">三室两厅</div>
-						<div class="select_lines font30 color3">三室两厅</div>
-						<div class="select_lines font30 color3">三室两厅</div>
+						<div class="select_lines font30 color3"  @click="search">不限</div>
+						<div class="select_lines font30 color3" data-layout="三室两厅" @click="search">三室两厅</div>
+						<div class="select_lines font30 color3" data-layout="三室一厅" @click="search">三室一厅</div>
+						<div class="select_lines font30 color3" data-layout="两室一厅" @click="search">两室一厅</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 3?'display:block':'display:none'">
@@ -77,39 +79,44 @@
 						<img src="images/up2.png"  style="left:86.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3" data-groomArea="" data-lroomArea="">不限</div>
-						<div class="select_lines font30 color3" data-groomArea="60" data-lroomArea="80">60~80平米</div>
-						<div class="select_lines font30 color3" data-groomArea="80" data-lroomArea="100">80~100平米</div>
-						<div class="select_lines font30 color3"  data-groomArea="100" data-lroomArea="120">100~120平米</div>
+						<div class="select_lines font30 color3"  @click="search">不限</div>
+						<div class="select_lines font30 color3" data-groomArea="60" data-lroomArea="80" @click="search">60~80m²</div>
+						<div class="select_lines font30 color3" data-groomArea="80" data-lroomArea="100" @click="search">80~100m²</div>
+						<div class="select_lines font30 color3" data-groomArea="100" data-lroomArea="120" @click="search">100~120m²</div>
 					</div>
 				</div>
 			</div>
 			<div class="house_all">
-				<div class="house_list w710 flex" v-for="(item,index) in mainData">
-					<div class="house_list_cont flex" @click="intoPath(item.id)">
-						<div class="house_img">
-							<img :src="item.mainImg&&item.mainImg.length>0?item.mainImg[0].url:''">
-						</div>
-						<div class="house_right">
-							<div class="flex houseName">
-								<h4 class="font30 color3">{{item.name}}</h4>
-								<span class="font22 color9">{{item.area}}</span>
+				<div v-if="mainData.length>0">
+					<div class="house_list w710 flex" v-for="(item,index) in mainData">
+						<div class="house_list_cont flex" @click="intoPath(item.id)">
+							<div class="house_img">
+								<img :src="item.mainImg&&item.mainImg.length>0?item.mainImg[0].url:''">
 							</div>
-							<div class="house_price flexRowBetween">
-								<p class="font24">
-									{{item.roomArea}}m²
-								</p>
-								<span class="font24 color">均价{{item.unitPrice}}元/m²</span>
-							</div>
-							<div class="house_condition flex" style="height:40%;">
-								{{item.address}}
+							<div class="house_right">
+								<div class="flex houseName">
+									<h4 class="font30 color3">{{item.name}}</h4>
+									<span class="font22 color9">{{item.area}}</span>
+								</div>
+								<div class="house_price flexRowBetween">
+									<p class="font24">
+										{{item.roomArea}}m²
+									</p>
+									<span class="font24 color">均价{{item.unitPrice}}元/m²</span>
+								</div>
+								<div class="house_condition flex" style="height:40%;">
+									{{item.address}}
+								</div>
 							</div>
 						</div>
 					</div>
+					<div style="font-size:0.20rem;color:#666;text-align:center;margin-top:0.3rem;">
+					    技术支持:西安纯粹科技有限公司
+					</div>
 				</div>
-			</div>
-			<div style="font-size:0.20rem;color:#666;text-align:center;">
-			    技术支持:西安纯粹科技有限公司
+				<div v-else class="font28 color6 no_blank">
+					没有更多数据
+				</div>
 			</div>
 		</div>
 	</div>
@@ -122,14 +129,9 @@
             	isShow:999,
             	menuData:['区域','价格','户型','面积'],
             	mainData:[],
-     //        	searchData:{
-     //        		name:"",//name字段会模糊匹配
-					// gtotalPrice:'',//搜索总价>=50万的
-					// ltotalPrice:'', //搜索总价<=60万的
-					// groomArea:'', //搜索面积>=40平米的
-					// lroomArea:''//搜索面积<=100平米的
-     //        	},
-
+    			searchItem:{
+    			},
+    			search_name:'',
             }
         },
         created: function () {
@@ -162,33 +164,55 @@
         		const self =this;
         		self.mainData = [];
         		var dataSet = window.base.getDataSet(e);
-        		console.log(888,dataSet);
-        		console.log(999,dataSet.gtotalprice);
-        		var gtotalPrice = dataSet.gtotalprice;
-        		var ltotalprice = dataSet.ltotalprice;
-        		var groomArea = dataSet.gtotalprice;
-        		var lroomArea = dataSet.ltotalprice;
-        		console.log(1000,ltotalprice);
+        		if(dataSet.gtotalprice&&dataSet.ltotalprice){
+        			self.searchItem.gtotalPrice = dataSet.gtotalprice;
+        			self.searchItem.ltotalPrice = dataSet.ltotalprice;
+        		}
+        		if (dataSet.groomarea&&dataSet.lroomarea){
+        			self.searchItem.groomArea = dataSet.groomarea;
+        			self.searchItem.lroomArea = dataSet.lroomarea;
+        		}
+        		if (dataSet.layout){
+        			self.searchItem.layout = dataSet.layout;
+        		}
+        		if (dataSet.area){
+        			self.searchItem.area = dataSet.area;
+        		}
+        		console.log(1000,self.searchItem);
         		var postData = {};
         		 postData = {
 					"is_page":true,
 					"currentPage":1,
 					"pagesize":2,
-					"sortby":"unitPrice",//排序字段：单价unitPrice，总价totalPrice
-					"sort":"desc",//顺序：正序asc;倒序desc;
+					"sortby":"unitPrice",
+					"sort":"desc",
+					searchItem:self.searchItem,
+				}
+        		var callback = (res)=>{
+        				self.isShow = 999;
+                        self.mainData = res.data; 
+                        
+                    };
+        		window.base.secondHouseSearch(postData,callback);
+        	},
+        	searchName(){
+        		const self =this;
+        		self.mainData = [];
+        		var postData = {};
+        		 postData = {
+					"is_page":true,
+					"currentPage":1,
+					"pagesize":2,
+					"sortby":"unitPrice",
+					"sort":"desc",
 					"searchItem":{
-						"gtotalPrice":gtotalPrice,//搜索总价>=50万的
-						"ltotalPrice":ltotalprice, //搜索总价<=60万的
-						"groomArea":80,
-						"lroomArea":90,
+						"name":self.search_name,//name字段会模糊匹配
 					}
 				}
-        		console.log(111,postData);
-        		var callback = (res)=>{
+				var callback = (res)=>{
         			console.log(21,res);
                         self.mainData = res.data; 
                         console.log(self.mainData);
-                        self.isShow = 999;
                     };
         		window.base.secondHouseSearch(postData,callback);
         	},

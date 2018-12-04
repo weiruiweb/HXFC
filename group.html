@@ -77,8 +77,31 @@
 			  		</div>
 			  	</div>
 			  </div>
-			  <div class="submit_info" style="margin-top:0.3rem;margin-bottom:0.3rem;">免费报名</div>
+			  <div class="submit_info" style="margin-top:0.3rem;margin-bottom:0.3rem;" @click="appoint">免费报名</div>
 		  </div>
+		</div>
+	</div>
+	<div class="mask1" :style="is_show?'display:block':'display:none'"></div>
+	<div class="order" :style="is_show?'display:block':'display:none'" style="height:6rem;">
+		<div class="order_cont">
+			<div class="order_tlt bg1 font34 color1">
+				预约看房
+			</div>
+			<div class="order_note flex w710">
+				<div class="font28 color6" style="width:100%;height:0.7rem">
+					我们将为你保密个人信息，免费为你预约专车提供楼盘24小时的看房服务！
+				</div>
+			</div>
+			<div class="w710" style="margin-bottom:0.3rem;">
+				<input type="" class="w710 order_input radius10 border_c" placeholder="请输入联系人" v-model="submitData.name"/>
+			</div>
+			<div class="w710">
+				<input type="" class="w710 order_input radius10 border_c" placeholder="请输入联系电话" v-model="submitData.phone"/>
+			</div>
+			<div class="order_btn flex">
+				<button class="color" @click="cancel">取消</button>
+				<button class="color" @click="addMessage">确定</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -92,6 +115,11 @@
         data: function() {
             return {
             	mainData:[],
+            	is_show:false,
+            	submitData:{
+            		name:'',
+            		phone:'',
+            	}
             }
         },
         
@@ -117,6 +145,34 @@
                 };
         		window.base.userGroupList(postData,callback);
         	},
+        	appoint:function(e){
+        		const self = this;
+        		self.is_show = !self.is_show;
+        	},
+        	addMessage(){
+        		const self  = this;
+        		var postData = {};
+        		postData={
+        			token:'22a058bb1896f38179f9856f3e13ddb4',
+        			thirdapp_id:1,
+					submit:self.submitData,
+        		};
+        		console.log(999,self.postData);
+        		const callback = (res)=>{
+	             	if(res.solely_code==100000){
+						alert('提交成功');
+						window.location.reload();
+					}else{
+						alert('网络故障')
+					}
+	            };
+	             window.base.addMessage(postData,callback);
+	             self.cancel();
+        	},
+        	cancel:function(e){
+        		const self = this;
+        		self.is_show = false;
+        	}
         }
     });
             

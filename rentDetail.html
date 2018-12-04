@@ -18,7 +18,7 @@
 <div id="app">
 	<div class="w750">
 		<div class="banner2">
-			<img src="images/1.jpg" />
+			<img :src="mainData.mainImg[0]?mainData.mainImg[0].url:'images/1.jpg'" />
 		</div>
 		<div class="">
 			<h3 class="houseTitle font32 color3 w710 border_c">
@@ -69,39 +69,13 @@
 			</div>
 			<div class="decorateImg w710">
 				<div class="decorate_img w710 flexRowBetween" style="flex-wrap: wrap;">
-					<div class="recommend_left" style="margin:0">
-						<div class="img1"><img src="images/1.jpg"></div>
-						<div class="decorate_img_detial flex">
-							<div class="decorate_detial w100 flexRowBetween">
-								<p class="font24 color6">星华海岸城</p>
-								<p class="font24 color">15000/m² </p>
-							</div>
+					<div class="recommend_left" v-for="item in bannerImg">
+						<div class="img1">
+							<img :src="item.url">
 						</div>
-					</div>
-					<div class="recommend_left"  style="margin:0">
-						<div class="img1"><img src="images/1.jpg"></div>
-						<div class="decorate_img_detial flex">
-							<div class="decorate_detial w100 flexRowBetween">
-								<p class="font24 color6">星华海岸城</p>
-								<p class="font24 color">15000/m² </p>
-							</div>
-						</div>
-					</div>
-					<div class="recommend_left" style="margin:0">
-						<div class="img1"><img src="images/1.jpg"></div>
-						<div class="decorate_img_detial flex">
-							<div class="decorate_detial w100 flexRowBetween">
-								<p class="font24 color6">星华海岸城</p>
-								<p class="font24 color">15000/m² </p>
-							</div>
-						</div>
-					</div>
-					<div class="recommend_left"  style="margin:0">
-						<div class="img1"><img src="images/1.jpg"></div>
-						<div class="decorate_img_detial flex">
-							<div class="decorate_detial w100 flexRowBetween">
-								<p class="font24 color6">星华海岸城</p>
-								<p class="font24 color">15000/m² </p>
+						<div class="decorate_img_detial flex bg">
+							<div class="decorate_detial w100">
+								{{item.name}}
 							</div>
 						</div>
 					</div>
@@ -117,6 +91,7 @@
         data: function() {
             return {
             	mainData:[],
+            	bannerImg:[],
             }
         },
         
@@ -134,6 +109,17 @@
         	    var callback = (res)=>{
         			console.log(res);
                     self.mainData = res; 
+                    if(self.mainData.bannerImg){
+                     	for(var i=0;i<self.mainData.bannerImg.length;i++){
+                     		self.bannerImg.push(self.mainData.bannerImg[i]);
+                     		if(self.mainData.bannerImg[i].name){
+                     			if(self.mainData.bannerImg[i].name.indexOf(".")!=-1) {
+                     				self.mainData.bannerImg[i].name = self.mainData.bannerImg[i].name.split('.')[0];
+                     			}
+
+                     		}
+                     	}
+                     }
                     };
         		window.base.rentHouseArticle(postData,callback);
         	},

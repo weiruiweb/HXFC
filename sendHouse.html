@@ -39,15 +39,15 @@
 					<div class="input_before">户型:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item flexRowBetween radius10">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.layout.layoutRoom"/>
 							<span>室</span>
 						</div>
 						<div class="input_item flexRowBetween radius10">
-							<input placeholder=""/>
-							<span>室</span>
+							<input placeholder="" v-model="submitData.layout.layoutHotel"/>
+							<span>厅</span>
 						</div>
 						<div class="input_item flexRowBetween radius10">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.layout.layoutRooms"/>
 							<span>室</span>
 						</div>
 					</div>
@@ -70,7 +70,7 @@
 							<span>层</span>
 						</div>
 						<div class="input_item flexRowBetween radius10">
-							<span>第</span>
+							<span>共</span>
 							<input placeholder=""/>
 							<span>层</span>
 						</div>
@@ -78,19 +78,19 @@
 						</div>
 					</div>
 				</div>
-				<div class="input_list1 font28 flex">
-					<div class="input_before">精装程度:</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">装修程度:</div>
 					<div class="input flexRowBetween">
-						<div class="input_item radius10 bg2">
+						<div class="input_item radius10 bg2" data-id="0" :data-text="is_choose ==0?'毛坯':''" @click="decorate" >
 							毛坯
 						</div>
-						<div class="input_item radius10 bg2">
+						<div class="input_item radius10 bg2" data-id="1" :data-text="is_choose ==1?'精装':''" @click="decorate">
 							精装
 						</div>
-						<div class="input_item radius10 bg2">
+						<div class="input_item radius10 bg2" data-id="2" :data-text="is_choose ==2?'简装':''"@click="decorate">
 							简装
 						</div>
-						<div class="input_item radius10 bg2">
+						<div class="input_item radius10 bg2" data-id="3" :data-text="is_choose ==3?'拎包入住':''" @click="decorate">
 							拎包入住
 						</div>
 					</div>
@@ -123,8 +123,8 @@
 							<input placeholder="" v-model="submitData.publisher"/>
 						</div>
 						<div class="gender flex">
-							<label><input type="radio" name="radio" value="1" style="width:auto;height:auto" value="submitData.gender">男 </label> 
-							<label><input name="女" type="radio" value="" style="width:auto;height:auto"/>女 </label> 
+							<label><input type="radio" name="radio" value="1" style="width:auto;height:auto" value="submitData.gender" checked="checked">男</label> 
+							<label><input name="radio" type="radio" value="" style="width:auto;height:auto" value="submitData.gender"/>女</label> 
 						</div>
 					</div>
 				</div>
@@ -165,7 +165,11 @@
 		        type:'',
 		        address:'',
 		        years:'',
-		        layout:'',
+		        layout:{
+		        	layoutRoom:'',
+		        	layoutHotel:'',
+		        	layoutRooms:''
+		        },
 		        area:'',
 		        floor:'',
 		        direction:'',
@@ -173,20 +177,25 @@
 		        publisher:'',
 		        phone:'',
 		        gender:'',
-				},
+				}, 
+				is_choose:0,
             }
+           
         },
         
         created: function () {
         	const self = this;
-        	self.sendHouse();
         },
 
         methods:{
+        	decorate(e){
+        		const self = this;
+        		var dataSet = window.base.getDataSet(e);
+        		self.is_choose = dataSet.id;
+        	},
         	sendHouse(){
         		const self = this;
-        		console.log(999,self.submitData);
-	            const postData = {};
+	            var postData = {};
 	            postData = {
 					submit:self.submitData
 			    };
@@ -198,8 +207,9 @@
 						alert('网络故障')
 					}
 	            };
-	             window.base.postRentHomeResouce(postData,callback);
+	             window.base.rentHomeResouce(postData,callback);
         	},
+        	
         }
     });
             

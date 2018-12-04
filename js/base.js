@@ -177,6 +177,17 @@ window.base={
         };
         this.getData(allParams)
     }, 
+    HouseNews:function(param,callback) {
+        var allParams = {
+            url:'UserHouseNews/GetList',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
     /************新房列表***************/
     NewHouseList:function(param,callback) {
         var allParams = {
@@ -193,6 +204,17 @@ window.base={
     NewHouseArticle:function(param,callback) {
         var allParams = {
             url:'UserNewHouse/GetInfo',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    newHouseSearch:function(param,callback) {
+        var allParams = {
+            url:'UserNewHouse/HouseSort',
             type:'post',
             data:param,
             sCallback: function(data){
@@ -259,6 +281,17 @@ window.base={
         };
         this.getData(allParams)
     }, 
+    rentHouseSearch:function(param,callback) {
+        var allParams = {
+            url:'UserRentHouse/HouseSort',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
     /*****************商铺************************/
      UserShopsList:function(param,callback) {
         var allParams = {
@@ -282,6 +315,17 @@ window.base={
         };
         this.getData(allParams)
     },
+    shopsHouseSearch:function(param,callback) {
+        var allParams = {
+            url:'UserShops/ShopsSort',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    },
      /*****************写字楼************************/
      OfficeHouseList:function(param,callback) {
         var allParams = {
@@ -294,9 +338,20 @@ window.base={
         };
         this.getData(allParams)
     },
-     officeHouseArticle:function(param,callback) {
+    officeHouseArticle:function(param,callback) {
         var allParams = {
             url:'UserOffice/GetInfo',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    }, 
+    officeHouseSearch:function(param,callback) {
+        var allParams = {
+            url:'UserOffice/OfficeSort',
             type:'post',
             data:param,
             sCallback: function(data){
@@ -319,7 +374,7 @@ window.base={
     }, 
 
     //发布租房房源
-     postRentHomeResouce:function(arrayData,solelyFun){
+    rentHomeResouce:function(arrayData,solelyFun){
       var params = {
         type:'POST',
         url:'UserRentHouse/Submit',
@@ -328,9 +383,30 @@ window.base={
           solelyFun &&　solelyFun(data);
         },
       }
-      window.base.RequestData(params);
+      this.getData(params);
     },
-
+    addMessage:function(param,callback) {
+        var allParams = {
+            url:'UserMessage/addMessage',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    },
+    sellHomeResouce:function(param,callback) {
+        var allParams = {
+            url:'UserSecondHouse/Submit',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    },
     labelGet:function(param,callback) {
   
         var allParams = {

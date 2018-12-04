@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>我要卖方</title>
+<title>我要卖房</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="baidu-site-verification" content="z8EeuYl0nS" />
 <meta name="keywords" content="华夏房产">
@@ -21,33 +21,33 @@
 			<div class="main">
 				<div class="input_list1 font28 flex">
 					<div class="input_before">小区名称:</div>
-					<input placeholder="请输入小区名称"/>
+					<input placeholder="请输入小区名称" v-model='submitData.name'/>
 				</div>
 				<div class="input_list1 font28 flex">
 					<div class="input_before">建筑类型:</div>
-					<input placeholder="请输入建筑类型"/>
+					<input placeholder="请输入建筑类型" v-model='submitData.type'/>
 				</div>
 				<div class="input_list1 font28 flex">
 					<div class="input_before">地址:</div>
-					<input placeholder="请输入地址"/>
+					<input placeholder="请输入地址" v-model='submitData.address'/>
 				</div>
 				<div class="input_list1 font28 flex">
 					<div class="input_before">年代:</div>
-					<input placeholder="请输入年代"/>
+					<input placeholder="请输入年代" v-model='submitData.years'/>
 				</div>
 				<div class="input_list1 font28 flex" style="border:none;">
 					<div class="input_before">户型:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item flexRowBetween radius10">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.layout.layoutRoom"/>
 							<span>室</span>
 						</div>
 						<div class="input_item flexRowBetween radius10">
-							<input placeholder=""/>
-							<span>室</span>
+							<input placeholder="" v-model="submitData.layout.layoutHotel"/>
+							<span>厅</span>
 						</div>
 						<div class="input_item flexRowBetween radius10">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.layout.layoutRooms"/>
 							<span>室</span>
 						</div>
 					</div>
@@ -56,7 +56,7 @@
 					<div class="input_before">建筑面积:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item flexRowBetween radius10">
-							<input placeholder=""/>
+							<input placeholder="" v-model='submitData.area'/>
 							<span>m²</span>
 						</div>
 					</div>
@@ -66,11 +66,11 @@
 					<div class="input flexRowBetween">
 						<div class="input_item flexRowBetween radius10">
 							<span>第</span>
-							<input placeholder=""/>
+							<input placeholder="" v-model='submitData.floor'/>
 							<span>层</span>
 						</div>
 						<div class="input_item flexRowBetween radius10">
-							<span>第</span>
+							<span>共</span>
 							<input placeholder=""/>
 							<span>层</span>
 						</div>
@@ -78,19 +78,19 @@
 						</div>
 					</div>
 				</div>
-				<div class="input_list1 font28 flex">
-					<div class="input_before">精装程度:</div>
+				<div class="input_list1 font28 flex" style="border:none;">
+					<div class="input_before">装修程度:</div>
 					<div class="input flexRowBetween">
-						<div class="input_item radius10 bg2">
+						<div class="input_item radius10 bg2" data-id="0" :data-text="is_choose ==0?'毛坯':''" @click="decorate" >
 							毛坯
 						</div>
-						<div class="input_item radius10 bg2">
+						<div class="input_item radius10 bg2" data-id="1" :data-text="is_choose ==1?'精装':''" @click="decorate">
 							精装
 						</div>
-						<div class="input_item radius10 bg2">
+						<div class="input_item radius10 bg2" data-id="2" :data-text="is_choose ==2?'简装':''"@click="decorate">
 							简装
 						</div>
-						<div class="input_item radius10 bg2">
+						<div class="input_item radius10 bg2" data-id="3" :data-text="is_choose ==3?'拎包入住':''" @click="decorate">
 							拎包入住
 						</div>
 					</div>
@@ -98,7 +98,7 @@
 				<div class="input_list1 font28 flex"  style="border:none;">
 					<div class="input_before">朝向:</div>
 					<div class="input">
-						<select class="send_select" value="南北朝向">
+						<select class="send_select" v-model="submitData.direction" v-model='submitData.direction'>
 							<option value="南北朝向"></option>
 							<option value="南北朝向">南北朝向</option>
 							<option value="南北朝向">南北朝向</option>
@@ -111,7 +111,7 @@
 					<div class="input_before">售价:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item flexRowBetween radius10" style="width:2rem;">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.totalPrice"/>
 							<span>万</span>
 						</div>
 					</div>
@@ -120,11 +120,11 @@
 					<div class="input_before">称呼:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item radius10" style="width:2rem;">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.publisher"/>
 						</div>
 						<div class="gender flex">
-							<label><input type="radio" name="radio" value="1" style="width:auto;height:auto">男 </label> 
-							<label><input name="女" type="radio" value="" style="width:auto;height:auto"/>女 </label> 
+							<label><input type="radio" name="radio" value="1" style="width:auto;height:auto" value="submitData.gender" checked="checked">男</label> 
+							<label><input name="radio" type="radio" value="" style="width:auto;height:auto" value="submitData.gender"/>女</label> 
 						</div>
 					</div>
 				</div>
@@ -132,11 +132,11 @@
 					<div class="input_before">手机号:</div>
 					<div class="input flexRowBetween">
 						<div class="input_item radius10" style="width:3.5rem;">
-							<input placeholder=""/>
+							<input placeholder="" v-model="submitData.phone"/>
 						</div>
 					</div>
 				</div>
-				<div class="input_list1 font28 flex">
+				<div class="input_list1 font28 flex" style="border:none;">
 					<div class="input_before">验证码:</div>
 					<div class="input flex">
 						<input placeholder="" class="input_item" style="width:2rem;margin-right:0.3rem"/>
@@ -145,7 +145,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="submit_info" style="margin:0.3rem auto">确认发布</div>
+				<div class="submit_info" style="margin:0.3rem auto" @click="sendHouse">确认发布</div>
 			</div>
 		</div>
 	</div>
@@ -159,15 +159,57 @@
         el: '#app',
         data: function() {
             return {
+        	submitData:{
+				token:"9098b27fd4556234be57f1bd486caeef",
+		        name:'',
+		        type:'',
+		        address:'',
+		        years:'',
+		        layout:{
+		        	layoutRoom:'',
+		        	layoutHotel:'',
+		        	layoutRooms:''
+		        },
+		        area:'',
+		        floor:'',
+		        direction:'',
+		        totalPrice:'',
+		        publisher:'',
+		        phone:'',
+		        gender:'',
+				}, 
+				is_choose:0,
             }
+           
         },
         
         created: function () {
-
+        	const self = this;
         },
 
         methods:{
-
+        	decorate(e){
+        		const self = this;
+        		var dataSet = window.base.getDataSet(e);
+        		self.is_choose = dataSet.id;
+        	},
+        	sendHouse(){
+        		const self = this;
+	            var postData = {};
+	            postData = {
+					submit:self.submitData
+			    };
+	            const callback = (res)=>{
+	             	if(res.solely_code==100000){
+						alert('提交成功');
+						window.location.reload();
+					}else{
+						alert('网络故障')
+					}
+	            };
+	             window.base.sellHomeResouce(postData,callback);
+        	},
+        	
         }
     });
             

@@ -20,9 +20,9 @@
 		<div style="position: fixed;top:0;background:#fff;z-index:999;width:100%;">
 			<div class="search_second w710 flex" style="margin-top: 0.2rem;margin-bottom: 0.2rem;z-index:99">
 			    <div class="search_right flex font28 color6 bg" style="width:100%;">
-			    	<input type="" style="width:88%;" class="bg" name="" placeholder="请输入楼盘名称、附近商圈、地铁"/>
-				      <div class="search_btn flex bg" style="width:12%">
-				       <img src="images/search.png">
+			    	<input type="" style="width:88%;" class="bg" name="" placeholder="请输入楼盘名称" v-model="search_name"/>
+				      <div class="search_btn flex bg" style="width:12%" @click="searchName">
+				        <img src="images/search.png">
 				      </div>
 			    </div>
 			</div>
@@ -42,10 +42,12 @@
 						<img src="images/up2.png" style="left:12.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3">不限</div>
-						<div class="select_lines font30 color3">海城区</div>
-						<div class="select_lines font30 color3">海港区</div>
-						<div class="select_lines font30 color3">银海区</div>
+						<div class="select_lines font30 color3" @click="search">不限</div>
+						<div class="select_lines font30 color3" data-area="海城区"  @click="search">海城区</div>
+						<div class="select_lines font30 color3" data-area="银海区"  @click="search">银海区</div>
+						<div class="select_lines font30 color3" data-area="铁山港"  @click="search">铁山港</div>
+						<div class="select_lines font30 color3" data-area="海城区"  @click="search">合浦县</div>
+						<div class="select_lines font30 color3" data-area="银海区"  @click="search">其他</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
@@ -53,10 +55,14 @@
 						<img src="images/up2.png" style="left:37.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3">8000</div>
-						<div class="select_lines font30 color3">9000</div>
-						<div class="select_lines font30 color3">15000</div>
-						<div class="select_lines font30 color3">17000</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="0" data-ltotalPrice="500" @click="search">1000以下</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="1000" data-ltotalPrice="3000" @click="search">1000~3000</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="3000" data-ltotalPrice="7000" @click="search">3000~7000</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="7000" data-ltotalPrice="11000" @click="search">7000~11000</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="11000" data-ltotalPrice="18000" @click="search">11000~18000</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="18000" data-ltotalPrice="30000" @click="search">18000~30000</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="30000" data-ltotalPrice="50000" @click="search">30000~50000</div>
+						<div class="select_lines font30 color3" data-gtotalPrice="50000" data-ltotalPrice="" @click="search">50000以上</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 2?'display:block':'display:none'">
@@ -64,10 +70,14 @@
 						<img src="images/up2.png"  style="left:61.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3">不限</div>
-						<div class="select_lines font30 color3">三室两厅</div>
-						<div class="select_lines font30 color3">三室两厅</div>
-						<div class="select_lines font30 color3">三室两厅</div>
+						<div class="select_lines font30 color3" data-groomArea="" data-lroomArea="50" @click="search">50m²以下</div>
+						<div class="select_lines font30 color3" data-groomArea="50" data-lroomArea="90" @click="search">50-90m²</div>
+						<div class="select_lines font30 color3" data-groomArea="90" data-lroomArea="150" @click="search">90-150m²</div>
+						<div class="select_lines font30 color3" data-groomArea="150" data-lroomArea="220" @click="search">150-220m²</div>
+						<div class="select_lines font30 color3" data-groomArea="220" data-lroomArea="300" @click="search">220-300m²</div>
+						<div class="select_lines font30 color3" data-groomArea="300" data-lroomArea="400" @click="search">300-400m²</div>
+						<div class="select_lines font30 color3" data-groomArea="400" data-lroomArea="600" @click="search">400-600m²</div>
+						<div class="select_lines font30 color3" data-groomArea="600" data-lroomArea="" @click="search">600m²以上</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 3?'display:block':'display:none'">
@@ -78,31 +88,19 @@
 						<div class="w710">
 							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">类型</p>
 							<div class="condition flexRowBetween">
-								<div class="condition_item">不限</div>
-								<div class="condition_item">住宅</div>
-								<div class="condition_item">别墅</div>
-								<div class="condition_item">写字楼</div>
+								<div class="condition_item" data-officeMode="不限" @click="search">不限</div>
+								<div class="condition_item" data-officeMode="纯写字楼" @click="search">纯写字楼</div>
+								<div class="condition_item" data-officeMode="商业综合体" @click="search">商业综合体</div>
+								<div class="condition_item" style="margin-top:0.2rem;" data-officeMode="住宅写字楼" @click="search">住宅写字楼</div>
 							</div>
-							<div class="condition flex border_c padding30" style="margin-top:0.18rem;">
-								<div class="condition_item" style="margin-right:0.08rem;">商铺</div>
-								<div class="condition_item">两限房</div>
-							</div>
-							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">面积</p>
-							<div class="condition flexRowBetween area_con padding30  border_c">
-								<div class="condition_item">50m²以下</div>
-								<div class="condition_item">50-70m²</div>
-								<div class="condition_item">70-90m²</div>
-								<div class="condition_item">90-110m²</div>
-								<div class="condition_item">110-130m²</div>
-								<div class="condition_item">130-150m²</div>
-								<div class="condition_item">150-170m²</div>
-								<div class="condition_item">200m²</div>
-							</div>
-							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">销售状态</p>
+							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">特色</p>
 							<div class="condition flexRowBetween padding30 border_c">
-								<div class="condition_item">在售</div>
-								<div class="condition_item">待售</div>
-								<div class="condition_item">售完</div>
+								<div class="condition_item" data-characterLabel="免费中介" @click="search">免费中介</div>
+								<div class="condition_item" data-characterLabel="可注册" @click="search">可注册</div>
+								<div class="condition_item" data-characterLabel="交通便利" @click="search">交通便利</div>
+								<div class="condition_item" data-characterLabel="地标建筑" @click="search" style="margin-top:0.2rem;">地标建筑</div>
+								<div class="condition_item" data-characterLabel="中心商务区" @click="search" style="margin-top:0.2rem;">中心商务区</div>
+								<div class="condition_item" data-characterLabel="独栋写字楼" @click="search" style="margin-top:0.2rem;">独栋写字楼</div>
 							</div>
 							<div class="confirm_btn flexRowBetween">
 								<div class="font28 color6 clear_condition">清空搜索条件</div>
@@ -158,6 +156,9 @@
             	isShow:999,
             	menuData:['区域','租金','面积','更多'],
             	mainData:[],
+            	searchItem:{},
+            	bannerImg:[],
+            	search_name:'',
             }
         },
         
@@ -182,6 +183,67 @@
                     console.log(self.mainData);
                 };
         		window.base.OfficeHouseList(postData,callback);
+        	},
+        	search(e){
+        		const self =this;
+        		self.mainData = [];
+        		var dataSet = window.base.getDataSet(e);
+        		console.log(999,dataSet);
+        		if(dataSet.gtotalprice&&dataSet.ltotalprice){
+        			self.searchItem.gunitPrice = dataSet.gtotalprice;
+        			self.searchItem.lunitPrice = dataSet.ltotalprice;
+        		}
+        		if (dataSet.groomarea&&dataSet.lroomarea){
+        			self.searchItem.groomArea = dataSet.groomarea;
+        			self.searchItem.lroomArea = dataSet.lroomarea;
+        		}
+        		if (dataSet.officemode){
+        			self.searchItem.officeMode = dataSet.officemode;
+        		}
+        		if (dataSet.characterlabel){
+        			self.searchItem.characterLabel = dataSet.characterlabel;
+        		}
+        		
+        		if (dataSet.area){
+        			self.searchItem.area = dataSet.area;
+        		}
+        		console.log(1000,self.searchItem);
+        		var postData = {};
+        		 postData = {
+					"is_page":true,
+					"currentPage":1,
+					"pagesize":2,
+					"sortby":"totalPrice",
+					"sort":"asc",
+					searchItem:self.searchItem,
+				}
+        		var callback = (res)=>{
+        				self.isShow = 999;
+                        self.mainData = res.data; 
+                        
+                    };
+        		window.base.officeHouseSearch(postData,callback);
+        	},
+        	searchName(){
+        		const self =this;
+        		self.mainData = [];
+        		var postData = {};
+        		 postData = {
+					"is_page":true,
+					"currentPage":1,
+					"pagesize":6,
+					"sortby":"unitPrice",
+					"sort":"desc",
+					"searchItem":{
+						"name":self.search_name,//name字段会模糊匹配
+					}
+				}
+				var callback = (res)=>{
+        			console.log(21,res);
+                        self.mainData = res.data; 
+                        console.log(self.mainData);
+                    };
+        		window.base.officeHouseSearch(postData,callback);
         	},
         	tab(e){
         		const self =this;

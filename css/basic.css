@@ -1075,6 +1075,7 @@ div{
   line-height: 0.6rem;
   border-radius:0.1rem;
   border:solid 1px #e0e0e0;
+  margin-right:0.2rem;
 }
 .area_con .condition_item{
   margin-top: 0.08rem;
@@ -1099,4 +1100,10 @@ div{
 .officeItem span{
   margin:0 0.06rem;
   display: inline-block;
+}
+.no_blank{
+  width:100%;
+  height:60vh;
+  text-align:center;
+  line-height: 60vh;
 }

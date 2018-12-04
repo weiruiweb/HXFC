@@ -26,8 +26,8 @@
 		      <span class="font24 color6">西安</span>
 		    </div>
 		    <div class="search_right flex font28 color6">
-		    	<input type="" name="" placeholder="请输入楼盘名称、附近商圈、地铁"></input>
-			      <div class="search_btn flex">
+		    	<input type="" name="" placeholder="请输入楼盘名称" v-model="search_name"></input>
+			      <div class="search_btn flex" @click="searchName">
 			       <img src="images/search.png">
 			      </div>
 		    </div>
@@ -71,11 +71,11 @@
 		  </a>
 		  <a class="menu_item" href="sellHouse.html">
 		    <span><img src="images/index_icon10.png"/></span>
-		    <div>我要卖方</div>
+		    <div>我要卖房</div>
 		  </a>
 		</div>
 		<div class="layout_three flex">
-			<div class="layout_three_cont flex">
+			<a class="layout_three_cont flex" href="information.html">
 				<div class="layoutT_left">
 					<div class="zixun flex">
 						<div class="zixun_cont font32 color1">
@@ -84,13 +84,12 @@
 					</div>
 				</div>
 				<div class="layoutT_center">
-					<a class="avoidOverflow font26 color6" href="information.html">三项目共571套房源摇号开盘浐灞三项目共571套房源摇号开盘浐灞</a>
-					<a class="avoidOverflow font26 color6"  href="information.html">三项目共571套房源摇号开盘浐灞三项目共571套房源摇号开盘浐灞</a>
+					<div class="avoidOverflow font26 color6"  v-for="item in informationData" >{{item.description}}</div>
 				</div>
 				<div class="layoutT_right">
-					<img src="images/1.jpg" />
+					<img :src="informationData[0]&&informationData[0].img[0]?informationData[0].img[0].url:''" />
 				</div>
-			</div>
+			</a>
 		</div>
 		<div class="recommdent w710">
 			<h3 class="font36 color3 bottom30">买房优选</h3>
@@ -139,10 +138,10 @@
 				</div>
 			</div>
 			<div class="area_two flex" :style="is_up?'height:100%;':'height:0;overflow:hidden'">
-				<p class="font26 color6">面积:</p>
+				<p class="font26 color6" style="width:8%;"></p>
 				<p class="font26 coolr3 area_item">60平米以下</p>
-				<p class="font26 coolr3 area_item">60-80平米以下</p>
-				<p class="font26 coolr3 area_item">80-100平米以下</p>
+				<p class="font26 coolr3 area_item">110-130平米以下</p>
+				<p class="font26 coolr3 area_item">130平米以上</p>
 			</div>
 			<div class="qucik_condition">
 				<a class="qucik_item radius20 qucik_color1">
@@ -174,13 +173,13 @@
 		<div class="newHouse w710">
 			<h3 class="font36 color3 bottom30" style="margin-top:0.5rem;">新房推荐</h3>
 			<div v-for="item in newHouseData">
-				<div class="new_item">
+				<div class="new_item" @click="intoPath(item.relationinfo.id)">
 					<div class="house_tlt font32 color1">
 						<div class="sell_status color1">在售</div>
 					</div>
 					<div class="house_cont">
 						<div class="new_house_box flex">
-							<img src="images/1.jpg" />
+							<img :src="item.relationinfo.mainImg.length>0?item.relationinfo.mainImg[0].url:''" />
 							<div class="new_house_detail w710">
 								<div class="house_name flexRowBetween">
 									<p class="font32 color1">{{item.relationinfo.name}}</p>
@@ -219,11 +218,11 @@
 				</div>
 			</div>
 			<div class="w710">
-				<input type="" class="w710 order_input radius10 border_c"/>
+				<input type="" class="w710 order_input radius10 border_c" placeholder="请输入联系电话" v-model="contactPhone"/>
 			</div>
 			<div class="order_btn flex">
 				<button class="color" @click="cancel">取消</button>
-				<button class="color">确定</button>
+				<button class="color" @click="addMessage">确定</button>
 			</div>
 		</div>
 	</div>
@@ -250,15 +249,38 @@
             	is_show:false,
             	is_up:false,
             	newHouseData:[],
+            	contactPhone:'',
+            	search_name:'',
+            	informationData:[],
             }
         },
         
         created: function () {
         	const self =this;
         	self.getNewHouse();
+        	self.getInformation();
         },
 
         methods:{
+        	getInformation(){
+        		const self = this;
+        		var postData = {};
+        		postData = {
+        			"currentPage":1,
+					"pagesize":2,
+					"is_page":true,
+					"searchItem":{
+						"thirdapp_id":1,
+					    "menu_id":"42"
+					}
+        		}
+        		var callback = (res)=>{
+        			console.log(res);
+                        self.informationData = res.data;
+                    };
+                    console.log(self.informationData);
+        		window.base.GetList(postData,callback);
+        	},
         	getNewHouse(){
         		const self =this;
         		var postData = {};
@@ -274,12 +296,55 @@
         		console.log(111,postData);
         		var callback = (res)=>{
                         self.newHouseData = res[0];
-                        console.log(21,res);
-                        console.log(22,self.newHouseData);
+                        console.log(999,self.newHouseData)
                     };
         		
-        		console.log(22,self.newHouseData);
         		window.base.NewRecomGetList(postData,callback);
+        	},
+        	addMessage(){
+        		const self  = this;
+        		var postData = {};
+        		postData={
+        			token:'22a058bb1896f38179f9856f3e13ddb4',
+        			thirdapp_id:1,
+					name:"",
+					content:"",
+					phone:self.contactPhone,
+        		};
+        		console.log(999,self.postData);
+        		const callback = (res)=>{
+	             	if(res.solely_code==100000){
+						alert('提交成功');
+						window.location.reload();
+					}else{
+						alert('网络故障')
+					}
+	            };
+	             window.base.addMessage(postData,callback);
+	             self.cancel();
+        	},
+        	searchName(){
+        		const self =this;
+        		self.mainData = [];
+        		var postData = {};
+        		 postData = {
+					"is_page":true,
+					"currentPage":1,
+					"pagesize":2,
+					"sortby":"unitPrice",
+					"sort":"desc",
+					"searchItem":{
+						"name":self.search_name,//name字段会模糊匹配
+					}
+				}
+				var callback = (res)=>{
+                        self.mainData = res.data; 
+                        console.log(999,self.mainData[0].id);
+                        if(self.mainData){
+                        	window.location.href="./houseDetail.html?id="+self.mainData[0].id
+                        }
+                    };
+        		window.base.secondHouseSearch(postData,callback);
         	},
         	appoint:function(e){
         		const self = this;
@@ -292,6 +357,11 @@
         	cancel:function(e){
         		const self = this;
         		self.is_show = false;
+        	},
+        	intoPath(index){
+        		console.log(index);
+        		var art_id = index;
+        		window.location.href="houseDetail.html?id="+art_id;
         	}
         }
     });

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>装修</title>
+<title>详情</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="baidu-site-verification" content="z8EeuYl0nS" />
 <meta name="keywords" content="华夏房产">
@@ -18,18 +18,17 @@
 <div id="app">
 	<div class="w750 bg detail">
 		<div class="w710 banner1 bottom20">
-			<h4 class="font36 color3" style="height:0.9rem;line-height:0.9rem;text-align: center;">西安纯粹科技有限公司</h4>
+			<h4 class="font36 color3" style="height:0.9rem;line-height:0.9rem;text-align: center;">{{mainData.title}}</h4>
 			<div class="big_title flexRowBetween">
 			    <div class="tlt_left"></div>
-			    <div class="tlt_center font22 color9">华夏房产 2018-9-9</div>
+			    <div class="tlt_center font22 color9">华夏房产 {{mainData.create_time}}</div>
 			    <div class="tlt_left"></div>
 			</div>
-			<div class="font24 color6" style="line-height:0.4rem;margin-top:0.3rem">三项目共571套房源摇号开盘浐灞三项目三项共盘浐灞三项目三 三项目共571套房源摇号开盘浐灞三项目三项共盘浐灞三项目三 三项目
+			<div class="font24 color6" style="line-height:0.4rem;margin-top:0.3rem">{{mainData.description}}
 			</div>
-			<img src="images/1.jpg" style="height:3.8rem;">
-			<div class="font24 color6" style="line-height:0.4rem;">三项目共571套房源摇号开盘浐灞三项目三项共盘浐灞三项目三 三项目共571套房源摇号开盘浐灞三项目三项共盘浐灞三项目三 三项目
-				三项目共571套房源摇号开盘浐灞三项目三项共盘浐灞三项目三 三项目共571套房源摇号开盘浐灞三项目三项共盘浐灞三项目三 三项目
+			<div class="font24 color6" style="line-height:0.4rem;" v-html="mainData.article_content.content">
 			</div>
+			
 		</div>
 		
 	</div>
@@ -39,15 +38,32 @@
         el: '#app',
         data: function() {
             return {
+            	mainData:[],
             }
         },
         
         created: function () {
-
+        	const self = this;
+        	self.getMainData();
         },
 
         methods:{
-
+        	getMainData(){
+        		const self = this;
+        		var postData ={
+        			"thirdapp_id":1,
+        			"id":window.base.GetRequest().id
+        		};
+        		var callback = (res)=>{
+                    self.mainData = res;              
+                    if(self.mainData.create_time.indexOf(" ")!=-1) {
+	         				self.mainData.create_time = self.mainData.create_time.split(' ')[0];
+	         			}
+	         			console.log(1243,self.mainData.create_time);
+                    };
+                    
+        		window.base.getArticle(postData,callback);
+        	}
         }
     });
             

@@ -18,7 +18,7 @@
 <div id="app">
 	<div class="w750">
 		<div class="banner2">
-			<img src="images/1.jpg" />
+			<img :src="mainData.mainImg[0]?mainData.mainImg[0].url:'images/1.jpg'" />
 		</div>
 		<div class="">
 			<h3 class="houseTitle font32 color3 w710 border_c">
@@ -29,31 +29,31 @@
 			  <a class="menu_item flex">
 			  	<div class="w100">
 				    <span><img src="images/detail_icon1.png"/></span>
-				    <div class="font30 color6">新房</div>
+				    <div class="font30 color6">首页</div>
 				</div>
 			  </a>
 			  <a class="menu_item flex">
 			  	<div class="w100">
 				    <span><img src="images/detail_icon2.png"/></span>
-				    <div class="font30 color6">新房</div>
+				    <div class="font30 color6">详情</div>
 				</div>
 			  </a>
 			  <a class="menu_item flex">
 			  	<div class="w100">
 				    <span><img src="images/detail_icon3.png"/></span>
-				    <div class="font30 color6">新房</div>
+				    <div class="font30 color6">动态</div>
 				</div>
 			  </a>
 			  <a class="menu_item flex">
 			  	<div class="w100">
 				    <span><img src="images/detail_icon4.png"/></span>
-				    <div class="font30 color6">新房</div>
+				    <div class="font30 color6">相册</div>
 				</div>
 			  </a>
 			  <a class="menu_item flex">
 			  	<div class="w100">
 				    <span><img src="images/detail_icon5.png"/></span>
-				    <div class="font30 color6">新房</div>
+				    <div class="font30 color6">房源</div>
 				</div>
 			  </a>
 			</div>
@@ -101,8 +101,7 @@
 			<div class="house_detail_tlt w710 color font36">
 				楼盘动态
 			</div>
-			<div class="font24 color6 w710">
-				{{mainData.description}}
+			<div class="font24 color6 w710" v-html="mainData.description">
 			</div>
 			<div class="house_detail_tlt w710 color font36">
 				相册
@@ -126,21 +125,14 @@
 			</div>
 			<div class="decorateImg w710">
 				<div class="decorate_img w710 flexRowBetween" style="flex-wrap: wrap;">
-					<div class="recommend_left" style="margin:0" >
-						<div class="img1"><img src="images/1.jpg"></div>
-						<div class="decorate_img_detial flex">
-							<div class="decorate_detial w100 flexRowBetween">
-								<p class="font24 color6">星华海岸城</p>
-								<p class="font24 color">15000/m² </p>
-							</div>
+					<div class="recommend_left" style="margin:0" v-for="item in houseData">
+						<div class="img1">
+							<img :src="item.houseinfo.mainImg[0]?item.houseinfo.mainImg[0].url:'images/1.jpg'">
 						</div>
-					</div>
-					<div class="recommend_left"  style="margin:0">
-						<div class="img1"><img src="images/1.jpg"></div>
 						<div class="decorate_img_detial flex">
 							<div class="decorate_detial w100 flexRowBetween">
-								<p class="font24 color6">星华海岸城</p>
-								<p class="font24 color">15000/m² </p>
+								<p class="font24 color6">{{item.houseinfo.name}}</p>
+								<p class="font24 color">{{item.houseinfo.unitPrice}}/m² </p>
 							</div>
 						</div>
 					</div>
@@ -160,11 +152,11 @@
 				</div>
 			</div>
 			<div class="w710">
-				<input type="" class="w710 order_input radius10 border_c"/>
+				<input type="" class="w710 order_input radius10 border_c" v-model="contactPhone"/>
 			</div>
 			<div class="order_btn flex">
 				<button class="color" @click="cancel">取消</button>
-				<button class="color">确定</button>
+				<button class="color" @click="addMessage">确定</button>
 			</div>
 		</div>
 	</div>
@@ -187,16 +179,18 @@
             return {
             	is_show:false,
             	mainData:[],
+            	houseData:[],
             	album:[],
             	albumTwo:[],
             	albumName:[],
+            	contactPhone:'',
             }
         },
         
         created: function () {
         	const self = this;
         	this.getMainData();
-
+        	this.getHouseNews()
         },
 
         methods:{
@@ -244,6 +238,46 @@
                      // }
                     };
         		window.base.NewHouseArticle(postData,callback);
+        	},
+        	getHouseNews(){
+        		const self =this;
+        		var postData = {
+        			"is_page":true,
+					"currentPage":1,
+					"pagesize":4,
+					"searchItem":{
+						"houseID":window.base.GetRequest().id,
+						"type":3
+						}
+        	    };
+        	    var callback = (res)=>{
+        			
+                    self.houseData = res.data; 
+                    console.log(999,self.houseData);
+                    };
+        		window.base.HouseNews(postData,callback);
+        	},
+        	addMessage(){
+        		const self  = this;
+        		var postData = {};
+        		postData={
+        			token:'22a058bb1896f38179f9856f3e13ddb4',
+        			thirdapp_id:1,
+					name:"",
+					content:"",
+					phone:self.contactPhone,
+        		};
+        		console.log(999,self.postData);
+        		const callback = (res)=>{
+	             	if(res.solely_code==100000){
+						alert('提交成功');
+						window.location.reload();
+					}else{
+						alert('网络故障')
+					}
+	            };
+	             window.base.addMessage(postData,callback);
+	             self.cancel();
         	},
         	appoint:function(e){
         		const self = this;
