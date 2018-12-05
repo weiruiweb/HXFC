@@ -21,9 +21,10 @@
 	    	<img src="images/1.jpg" />
 		</div>
 		<div class="search flex" style="width:100%;">
-		    <div class="search_left flexRowCenter font32 color1">
+		    <div class="search_left flexRowCenter font32 color1" @click="select_city">
 		      <img src="images/position.png">
-		      <span class="font24 color6">西安</span>
+		      <span class="font28 color3" v-if="selectData">{{selectData}}</span>
+		      <span class="font28 color3" v-else>济宁</span>
 		    </div>
 		    <div class="search_right flex font28 color6">
 		    	<input type="" name="" placeholder="请输入楼盘名称" v-model="search_name"></input>
@@ -32,12 +33,18 @@
 			      </div>
 		    </div>
 		</div>
+		<ul class="city" v-if="is_select">
+      		<li class="font24 color1"  data-city="济宁" data-label="2" @click="selectCity">济宁</li>
+      		<li class="font24 color1"  data-city="北海" data-label="3" @click="selectCity">北海</li>
+      		<li class="font24 color1"  data-city="钦州" data-label="4" @click="selectCity">钦州</li>
+      		<li class="font24 color1"  data-city="防城港" data-label="6" @click="selectCity">防城港</li>
+      	</ul>
 	  	<div class="menu flexRowBetween font24 color6 border_c">
 		  <a class="menu_item" href="newHouse.html">
 		    <span><img src="images/index_icon1.png"/></span>
 		    <div>新房</div>
 		  </a>
-		  <a class="menu_item">
+		  <a class="menu_item" href="houseDetail.html">
 		    <span><img src="images/index_icon2.png"/></span>
 		    <div>海景房</div>
 		  </a>
@@ -94,21 +101,21 @@
 		<div class="recommdent w710">
 			<h3 class="font36 color3 bottom30">买房优选</h3>
 			<div class="recommdent_cont flexRowBetween">
-				<a class="w32 flex radius20" style="background:#f6f8f3">
+				<a class="w32 flex radius20" href="newHouse.html" style="background:#f6f8f3">
 					<div class="recommdent_item">
 					    <span><img src="images/index_icon4.png"/></span>
 					    <h4 class="font28 color3">热门楼盘</h4>
 					    <p class="font20" style="color:#8ba666">投资自住皆宜</p>
 					</div>
 			  	</a>
-			  	<a class="w32 flex radius20" style="background:#f1f7f8">
+			  	<a class="w32 flex radius20" href="secondHouse.html"  style="background:#f1f7f8">
 					<div class="recommdent_item">
 					    <span><img src="images/index_icon4.png"/></span>
 					    <h4 class="font28 color3">特价房</h4>
 					    <p class="font20"  style="color:#7fcada">投资自住皆宜</p>
 					</div>
 			  	</a>
-			  	<a class="w32 flex radius20" style="background:#faf7f8">
+			  	<a class="w32 flex radius20" href="group.html" style="background:#faf7f8">
 					<div class="recommdent_item">
 					    <span><img src="images/index_icon4.png"/></span>
 					   <h4 class="font28 color3">团购房</h4>
@@ -121,17 +128,14 @@
 			<h3 class="font36 color3 bottom30" style="margin-top:0.5rem;">快捷找房</h3>
 			<div class="area flex">
 				<p class="font26 color6">区域：</p>
-				<p class="font26 coolr3 area_item">北海区</p>
-				<p class="font26 coolr3 area_item">防城港</p>
-				<p class="font26 coolr3 area_item">钦州</p>
-				<p class="font26 coolr3 area_item">济南</p>
+				<p class="font26 coolr3 area_item" :data-area="item" :style="is_area==item?'color:red':''" @click="searchItem" v-for="(item,index) in cityData">{{item}}</p>
 			</div>
 			<div class="area_two flex">
 				<div class="area flex">
 					<p class="font26 color6">面积:</p>
-					<p class="font26 coolr3 area_item">60平米以下</p>
-					<p class="font26 coolr3 area_item">60-80平米以下</p>
-					<p class="font26 coolr3 area_item">80-100平米以下</p>
+					<p class="font26 coolr3 area_item" data-groomArea="0" data-lroomArea="60" data-id="0" :style="is_room==0?'color:red':''" @click="searchItem1">60平米</p>
+					<p class="font26 coolr3 area_item" data-groomArea="60" data-lroomArea="80" data-id="1" :style="is_room==1?'color:red':''" @click="searchItem1">60-80平米</p>
+					<p class="font26 coolr3 area_item" data-id="2" :style="is_room==2?'color:red':''"  data-groomArea="80" data-lroomArea="100" @click="searchItem1">80-100平米</p>
 				</div>
 				<div class="area_up" @click="up_show">
 					<img src="images/up.png"/>
@@ -139,34 +143,34 @@
 			</div>
 			<div class="area_two flex" :style="is_up?'height:100%;':'height:0;overflow:hidden'">
 				<p class="font26 color6" style="width:8%;"></p>
-				<p class="font26 coolr3 area_item">60平米以下</p>
-				<p class="font26 coolr3 area_item">110-130平米以下</p>
-				<p class="font26 coolr3 area_item">130平米以上</p>
+				<p class="font26 coolr3 area_item" data-id="3" :style="is_room==3?'color:red':''" data-groomArea="100" data-lroomArea="130" @click="searchItem1">100-130平米</p>
+				<p class="font26 coolr3 area_item" data-id="4" :style="is_room==4?'color:red':''"  data-groomArea="130" data-lroomArea="180" @click="searchItem1">130-180平米</p>
+				<p class="font26 coolr3 area_item" data-id="5"   data-groomArea="180" data-lroomArea="" :style="is_room==5?'color:red':''"  @click="searchItem1">180平米以上</p>
 			</div>
 			<div class="qucik_condition">
-				<a class="qucik_item radius20 qucik_color1">
+				<a class="qucik_item radius20 qucik_color1" href="houseDetail.html">
 					海景房
 				</a>
-				<a class="qucik_item radius20 qucik_color2">
+				<a class="qucik_item radius20 qucik_color2" data-id="0" @click="second">
 					二手房
 				</a>
-				<a class="qucik_item radius20 qucik_color3">
+				<a class="qucik_item radius20 qucik_color3" href="group.html">
 					团购报名
 				</a>
-				<a class="qucik_item radius20 qucik_color4">
+				<a class="qucik_item radius20 qucik_color4" data-id="1" @click="second">
 					我要出租
 				</a>
-				<a class="qucik_item radius20 qucik_color1">
+				<a class="qucik_item radius20 qucik_color1" data-id="2" @click="second">
 					写字楼
 				</a>
-				<a class="qucik_item radius20 qucik_color2">
+				<a class="qucik_item radius20 qucik_color2" href="decorate.html">
 					精装修
 				</a>
-				<a class="qucik_item radius20 qucik_color3">
+				<a class="qucik_item radius20 qucik_color3" data-id="3" @click="second">
 					新房查询
 				</a>
-				<a class="qucik_item radius20 qucik_color4">
-					我要买房
+				<a class="qucik_item radius20 qucik_color4" href="sendHouse.html">
+					我要卖房
 				</a>
 			</div>
 		</div>
@@ -231,10 +235,10 @@
 				<img src="images/nav1.png"/>
 				<span class="font28 color3">预约看房</span>
 			</div>
-			<div class="appoint_left appoint_right flexRowCenter bg1">
+			<a href="tel:400-0000-688" class="appoint_left appoint_right flexRowCenter bg1">
 				<img src="images/nav2.png"/>
 				<span class="font28 color1">联系售楼部</span>
-			</div>
+			</a>
 		</div>
 </div>
 <div class="space_bottom"></div>
@@ -252,6 +256,14 @@
             	contactPhone:'',
             	search_name:'',
             	informationData:[],
+            	secondItem:{},
+            	searchData:[],
+            	cityData:['济宁','北海区','钦州','防城港'],
+            	selectData:'',
+            	selectLabel:'',
+            	is_select:false,
+            	is_area:'',
+            	is_room:999,
             }
         },
         
@@ -271,7 +283,7 @@
 					"is_page":true,
 					"searchItem":{
 						"thirdapp_id":1,
-					    "menu_id":"42"
+					    "menu_id":"42",
 					}
         		}
         		var callback = (res)=>{
@@ -290,13 +302,14 @@
 						"0":{
 							"theme_id":10,
 							"num":10
-						}
+						},
+						//label:self.selectLabel
 					}
 			    };
         		console.log(111,postData);
         		var callback = (res)=>{
                         self.newHouseData = res[0];
-                        console.log(999,self.newHouseData)
+                        console.log(222,self.newHouseData)
                     };
         		
         		window.base.NewRecomGetList(postData,callback);
@@ -311,7 +324,6 @@
 					content:"",
 					phone:self.contactPhone,
         		};
-        		console.log(999,self.postData);
         		const callback = (res)=>{
 	             	if(res.solely_code==100000){
 						alert('提交成功');
@@ -339,12 +351,62 @@
 				}
 				var callback = (res)=>{
                         self.mainData = res.data; 
-                        console.log(999,self.mainData[0].id);
-                        if(self.mainData){
+                        console.log(789,self.mainData);
+                        if(self.mainData.length>0){
                         	window.location.href="./houseDetail.html?id="+self.mainData[0].id
+                        }else{
+                        	alert("没有该楼盘")
                         }
                     };
-        		window.base.secondHouseSearch(postData,callback);
+        		window.base.newHouseSearch(postData,callback);
+        	},
+        	searchItem(e){
+        		const self =this;
+        		var dataSet = window.base.getDataSet(e);
+        		if (dataSet.area){
+        			self.secondItem.area = dataSet.area;
+        		}
+        		self.is_area = dataSet.area;
+
+        		console.log(121,self.is_area);
+        	},
+        	searchItem1(e){
+        		const self =this;
+        		var dataSet = window.base.getDataSet(e);
+        		if (dataSet.groomarea&&dataSet.lroomarea){
+        			self.secondItem.groomArea = dataSet.groomarea;
+        			self.secondItem.lroomArea = dataSet.lroomarea;
+        		}
+        		self.is_room = dataSet.id;
+        		console.log(122,self.secondItem);
+        	},
+
+        	second(e){
+        		const self =this;
+        	    var dataSet = window.base.getDataSet(e).id;
+        		if(dataSet==0){
+        			window.location.href='secondHouse.html?area='+self.secondItem.area+'&groom='+self.secondItem.groomArea+'&lroom='+self.secondItem.lroomArea
+        		}
+                if(dataSet==1){
+                		window.location.href='rentHouse.html?area='+self.secondItem.area
+                }
+                if(dataSet==2){
+                	
+        			window.location.href='officeHouse.html?area='+self.secondItem.area+'&groom='+self.secondItem.groomArea+'&lroom='+self.secondItem.lroomArea
+                }
+                if (dataSet==3){
+                		window.location.href='newHouse.html?area='+self.secondItem.area
+                }
+        	},
+        	selectCity(e){
+        		const self =this;
+        	    var dataSet = window.base.getDataSet(e);
+        	    self.selectData = dataSet.city;
+        	    self.selectLabel = dataSet.label;
+        	    self.is_select = false;
+        	    console.log(999,self.selectLabel);
+			    localStorage.setItem('city',self.selectLabel);
+			    // window.location.reload();
         	},
         	appoint:function(e){
         		const self = this;
@@ -358,14 +420,18 @@
         		const self = this;
         		self.is_show = false;
         	},
+        	select_city:function(e){
+        		const self = this;
+        		self.is_select = !self.is_select;
+        		console.log(self.is_select);
+        	},
         	intoPath(index){
         		console.log(index);
         		var art_id = index;
         		window.location.href="houseDetail.html?id="+art_id;
         	}
         }
-    });
-            
+    });         
 </script>
 </body>
 </html>

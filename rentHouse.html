@@ -43,11 +43,10 @@
 					</div>
 					<div class="select_bottom">
 						<div class="select_lines font30 color3" @click="search">不限</div>
-						<div class="select_lines font30 color3" data-area="海城区"  @click="search">海城区</div>
-						<div class="select_lines font30 color3" data-area="银海区"  @click="search">银海区</div>
-						<div class="select_lines font30 color3" data-area="铁山港"  @click="search">铁山港</div>
-						<div class="select_lines font30 color3" data-area="海城区"  @click="search">合浦县</div>
-						<div class="select_lines font30 color3" data-area="银海区"  @click="search">其他</div>
+						<div class="select_lines font30 color3" data-area="北海区"  @click="search">北海区</div>
+						<div class="select_lines font30 color3" data-area="防城港"  @click="search">防城港</div>
+						<div class="select_lines font30 color3" data-area="钦州"  @click="search">钦州</div>
+						<div class="select_lines font30 color3" data-area="济南"  @click="search">济南</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
@@ -148,21 +147,32 @@
         	},
         	rentHouseList(){
         		const self =this;
+        		var area = window.base.GetRequest().area;
+        		if(area !=='undefined'){
+        			self.searchItem.area =area
+        		}else{
+        			self.searchItem ={}
+        		}
         		var postData = {};
+        		console.log(1000,self.searchItem)
         		 postData = {
 			       		"is_page":true,
 						"currentPage":1,
 						"pagesize":10,
-						"searchItem":{
-						//	"label":1
-					}
+						searchItem:self.searchItem,
 			    };
         		var callback = (res)=>{
                         self.mainData = res.data; 
                         console.log(self.mainData);
                     };
         	
-        		window.base.rentHouseList(postData,callback);
+        		if (area) {
+                	postData.sortby = "roomArea";
+                	postData.sort = "desc";
+                	window.base.rentHouseSearch(postData,callback);
+                }else{
+        			window.base.rentHouseList(postData,callback);
+        		}
         	},
         	search(e){
         		const self =this;

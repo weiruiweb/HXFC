@@ -24,10 +24,6 @@
 					<input placeholder="请输入小区名称" v-model='submitData.name'/>
 				</div>
 				<div class="input_list1 font28 flex">
-					<div class="input_before">建筑类型:</div>
-					<input placeholder="请输入建筑类型" v-model='submitData.type'/>
-				</div>
-				<div class="input_list1 font28 flex">
 					<div class="input_before">地址:</div>
 					<input placeholder="请输入地址" v-model='submitData.address'/>
 				</div>
@@ -37,20 +33,7 @@
 				</div>
 				<div class="input_list1 font28 flex" style="border:none;">
 					<div class="input_before">户型:</div>
-					<div class="input flexRowBetween">
-						<div class="input_item flexRowBetween radius10">
-							<input placeholder="" v-model="submitData.layout.layoutRoom"/>
-							<span>室</span>
-						</div>
-						<div class="input_item flexRowBetween radius10">
-							<input placeholder="" v-model="submitData.layout.layoutHotel"/>
-							<span>厅</span>
-						</div>
-						<div class="input_item flexRowBetween radius10">
-							<input placeholder="" v-model="submitData.layout.layoutRooms"/>
-							<span>室</span>
-						</div>
-					</div>
+					<input placeholder="请输入X室X厅" v-model='submitData.layout'/>
 				</div>
 				<div class="input_list1 font28 flex" style="border:none;">
 					<div class="input_before">建筑面积:</div>
@@ -78,28 +61,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="input_list1 font28 flex" style="border:none;">
-					<div class="input_before">装修程度:</div>
-					<div class="input flexRowBetween">
-						<div class="input_item radius10 bg2" data-id="0" :data-text="is_choose ==0?'毛坯':''" @click="decorate" >
-							毛坯
-						</div>
-						<div class="input_item radius10 bg2" data-id="1" :data-text="is_choose ==1?'精装':''" @click="decorate">
-							精装
-						</div>
-						<div class="input_item radius10 bg2" data-id="2" :data-text="is_choose ==2?'简装':''"@click="decorate">
-							简装
-						</div>
-						<div class="input_item radius10 bg2" data-id="3" :data-text="is_choose ==3?'拎包入住':''" @click="decorate">
-							拎包入住
-						</div>
-					</div>
-				</div>
 				<div class="input_list1 font28 flex"  style="border:none;">
 					<div class="input_before">朝向:</div>
 					<div class="input">
 						<select class="send_select" v-model="submitData.direction" v-model='submitData.direction'>
-							<option value="南北朝向"></option>
 							<option value="南北朝向">南北朝向</option>
 							<option value="南北朝向">南北朝向</option>
 							<option value="南北朝向">南北朝向</option>
@@ -123,8 +88,14 @@
 							<input placeholder="" v-model="submitData.publisher"/>
 						</div>
 						<div class="gender flex">
-							<label><input type="radio" name="radio" value="1" style="width:auto;height:auto" value="submitData.gender" checked="checked">男</label> 
-							<label><input name="radio" type="radio" value="" style="width:auto;height:auto" value="submitData.gender"/>女</label> 
+							<div class="boy flex">
+								<label  data-text="男" @click="gender">男</label>
+								<img :src="(submitData.userGender=='男'?'images/select_a.png':'images/select.png')" data-text="男" @click="gender"/>
+							</div>
+							<div class="boy flex">
+								<label data-text="女"  @click="gender">女</label>
+								<img :src="(submitData.userGender=='女'?'images/select_a.png':'images/select.png')" data-text="女" @click="gender"/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -145,7 +116,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="submit_info" style="margin:0.3rem auto" @click="sendHouse">确认发布</div>
+				<div class="submit_info" style="margin:0.3rem auto" @click="submit">确认发布</div>
 			</div>
 		</div>
 	</div>
@@ -162,23 +133,17 @@
         	submitData:{
 				token:"9098b27fd4556234be57f1bd486caeef",
 		        name:'',
-		        type:'',
 		        address:'',
 		        years:'',
-		        layout:{
-		        	layoutRoom:'',
-		        	layoutHotel:'',
-		        	layoutRooms:''
-		        },
+		        layout:'',
 		        area:'',
 		        floor:'',
 		        direction:'',
 		        totalPrice:'',
 		        publisher:'',
 		        phone:'',
-		        gender:'',
+		        userGender:'男',
 				}, 
-				is_choose:0,
             }
            
         },
@@ -188,10 +153,11 @@
         },
 
         methods:{
-        	decorate(e){
+        	gender(e){
         		const self = this;
         		var dataSet = window.base.getDataSet(e);
-        		self.is_choose = dataSet.id;
+        		self.submitData.userGender = dataSet.text;
+        		console.log(909,self.submitData.userGender);
         	},
         	sendHouse(){
         		const self = this;
@@ -209,6 +175,21 @@
 	            };
 	             window.base.rentHomeResouce(postData,callback);
         	},
+        	submit(){
+	            const self = this;
+	            var phone = self.submitData.phone;
+	            console.log(self.submitData)
+	            const pass = window.base.checkComplete(self.submitData);
+	            if(pass){
+	              if(phone.trim().length != 11 || !/^1[3|4|5|6|7|8|9]\d{9}$/.test(phone)){
+	                alert('手机格式不正确')
+	              }else{    
+	                self.sendHouse();       
+	              }
+	            }else{
+	              alert('请补全信息');
+	            };
+	          },  
         	
         }
     });

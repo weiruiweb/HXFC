@@ -762,9 +762,14 @@ div{
   width:2.6rem;
   margin-left: 0.4rem;
 }
-.gender label{
-  margin-right: 0.3rem;
-}
+.boy img{
+    width:0.3rem;
+    height:0.3rem;
+    margin-left:0.1rem;
+  }
+  .boy{
+    margin-right:0.3rem;
+  }
 .homeInspec_btn{position: absolute;cursor:pointer;}
 .dialog{
   position:fixed;
@@ -1085,7 +1090,7 @@ div{
   padding-bottom:1rem;
 }
 .confirm_btn>div{
-  width:48%;
+  width:100%;
   height:0.6rem;
   text-align: center;
   line-height: 0.6rem;
@@ -1106,4 +1111,17 @@ div{
   height:60vh;
   text-align:center;
   line-height: 60vh;
+}
+.city{
+  position: absolute;
+  top:0.8rem;
+  left:2%;
+  width:1.5rem;
+  text-align: center;
+  background:rgba(0,0,0,0.3);
+  border-radius: 0.1rem 0.1rem 0 0;
+}
+.city li{
+  height:0.5rem;
+  line-height: 0.5rem;
 }

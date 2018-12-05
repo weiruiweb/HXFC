@@ -14,6 +14,11 @@
 <script src="js/base.js" type="application/javascript"></script>
 <script src="js/jquery1.8.3.js"></script>
 </head>
+<style>
+	.condition .condition_item:last-child{
+		margin-top:0.2rem;
+	}
+</style>
 <body style="background:#fff;">
 <div id="app">
 	<div class="w750 bg">
@@ -43,11 +48,10 @@
 					</div>
 					<div class="select_bottom">
 						<div class="select_lines font30 color3" @click="search">不限</div>
-						<div class="select_lines font30 color3" data-area="海城区"  @click="search">海城区</div>
-						<div class="select_lines font30 color3" data-area="银海区"  @click="search">银海区</div>
-						<div class="select_lines font30 color3" data-area="铁山港"  @click="search">铁山港</div>
-						<div class="select_lines font30 color3" data-area="海城区"  @click="search">合浦县</div>
-						<div class="select_lines font30 color3" data-area="银海区"  @click="search">其他</div>
+						<div class="select_lines font30 color3" data-area="北海区"  @click="search">北海区</div>
+						<div class="select_lines font30 color3" data-area="防城港"  @click="search">防城港</div>
+						<div class="select_lines font30 color3" data-area="钦州"  @click="search">钦州</div>
+						<div class="select_lines font30 color3" data-area="济南"  @click="search">济南</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
@@ -88,23 +92,14 @@
 						<div class="w710">
 							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">类型</p>
 							<div class="condition flexRowBetween">
-								<div class="condition_item" data-officeMode="不限" @click="search">不限</div>
-								<div class="condition_item" data-officeMode="纯写字楼" @click="search">纯写字楼</div>
-								<div class="condition_item" data-officeMode="商业综合体" @click="search">商业综合体</div>
-								<div class="condition_item" style="margin-top:0.2rem;" data-officeMode="住宅写字楼" @click="search">住宅写字楼</div>
+								<div class="condition_item" v-for="item in officeMode" :data-officeMode="item" :style="is_office==item?'color:red':''" @click="modeSelect" >{{item}}</div>
 							</div>
 							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">特色</p>
 							<div class="condition flexRowBetween padding30 border_c">
-								<div class="condition_item" data-characterLabel="免费中介" @click="search">免费中介</div>
-								<div class="condition_item" data-characterLabel="可注册" @click="search">可注册</div>
-								<div class="condition_item" data-characterLabel="交通便利" @click="search">交通便利</div>
-								<div class="condition_item" data-characterLabel="地标建筑" @click="search" style="margin-top:0.2rem;">地标建筑</div>
-								<div class="condition_item" data-characterLabel="中心商务区" @click="search" style="margin-top:0.2rem;">中心商务区</div>
-								<div class="condition_item" data-characterLabel="独栋写字楼" @click="search" style="margin-top:0.2rem;">独栋写字楼</div>
+								<div class="condition_item" v-for="item in characterLabel" :style="is_character==item?'color:red':''"  :data-characterLabel="item" @click="character">{{item}}</div>
 							</div>
 							<div class="confirm_btn flexRowBetween">
-								<div class="font28 color6 clear_condition">清空搜索条件</div>
-								<div class="bg1 font28 color1">确认</div>
+								<div class="bg1 font28 color1" @click="search">确认</div>
 							</div>
 						</div>
 					</div>
@@ -159,6 +154,14 @@
             	searchItem:{},
             	bannerImg:[],
             	search_name:'',
+            	officeMode:[
+            	 '不限','纯写字楼','商业综合体','住宅写字楼'
+            	],
+            	characterLabel:[
+            		'免费中介','可注册','交通便利','地标建筑','中心商务区','独栋写字楼'
+            	],
+            	is_office:'',
+            	is_character:''
             }
         },
         
@@ -169,20 +172,38 @@
         methods:{
         	OfficeHouseList(){
         		const self =this;
+        		var area = window.base.GetRequest().area;
+        		var groom = window.base.GetRequest().groom;
+        		var lroom = window.base.GetRequest().lroom;
+        		if(area !=='undefined'){
+        			self.searchItem.area =area
+        		}
+        		if(groom !=='undefined'){
+        			self.searchItem.groomArea =groom;
+        			self.searchItem.lroomArea =lroom
+        		}
+        		if(area !=='undefined'&&groom !=='undefined'){
+        			self.searchItem ={}
+        		}
         		var postData = {};
         		 postData = {
 			       		"is_page":true,
 						"currentPage":1,
 						"pagesize":10,
-						"searchItem":{
-						//	"label":1
-					}
+						searchItem:self.searchItem,
 			    };
         		var callback = (res)=>{
                     self.mainData = res.data; 
                     console.log(self.mainData);
                 };
-        		window.base.OfficeHouseList(postData,callback);
+        		console.log(999,self.searchItem);
+        		if (area||groom||lroom) {
+                	postData.sortby = "roomArea";
+                	postData.sort = "asc";
+                	window.base.officeHouseSearch(postData,callback);
+                }else{
+        			window.base.OfficeHouseList(postData,callback);
+        		}
         	},
         	search(e){
         		const self =this;
@@ -244,6 +265,23 @@
                         console.log(self.mainData);
                     };
         		window.base.officeHouseSearch(postData,callback);
+        	},
+        	modeSelect(e){
+        		const self =this;
+        		dataSet = window.base.getDataSet(e);
+        		self.searchItem.officeMode = dataSet.officemode;
+        		console.log(999,self.searchItem.officeMode);
+        		self.is_office = dataSet.officemode;
+        	},
+        	character(e){
+        		const self =this;
+        		dataSet = window.base.getDataSet(e);
+        		self.searchItem.characterLabel = dataSet.characterlabel;
+        		self.is_character = dataSet.characterlabel;
+        	},
+        	clear_condition(){
+        		self.searchItem = {}
+        		console.log(self.searchItem);
         	},
         	tab(e){
         		const self =this;

@@ -18,7 +18,7 @@
 <div id="app">
 	<div class="w750">
 		<div class="banner2">
-			<img :src="mainData.mainImg[0]?mainData.mainImg[0].url:'images/1.jpg'" />
+			<img :src="mainData.mainImg&&mainData.mainImg[0]?mainData.mainImg[0].url:'images/1.jpg'" />
 		</div>
 		<div class="">
 			<h3 class="houseTitle font32 color3 w710 border_c">
@@ -113,7 +113,7 @@
 							<img :src="item.url">
 						</div>
 						<div class="decorate_img_detial flex bg">
-							<div class="decorate_detial w100">
+							<div class="decorate_detial w100 avoidOverflow">
 								{{item.name}}
 							</div>
 						</div>
@@ -131,7 +131,7 @@
 						</div>
 						<div class="decorate_img_detial flex">
 							<div class="decorate_detial w100 flexRowBetween">
-								<p class="font24 color6">{{item.houseinfo.name}}</p>
+								<p class="font24 color6 avoidOverflow">{{item.houseinfo.name}}</p>
 								<p class="font24 color">{{item.houseinfo.unitPrice}}/m² </p>
 							</div>
 						</div>

@@ -43,11 +43,10 @@
 					</div>
 					<div class="select_bottom">
 						<div class="select_lines font30 color3" @click="search">不限</div>
-						<div class="select_lines font30 color3" data-area="海城区"  @click="search">海城区</div>
-						<div class="select_lines font30 color3" data-area="银海区"  @click="search">银海区</div>
-						<div class="select_lines font30 color3" data-area="铁山港"  @click="search">铁山港</div>
-						<div class="select_lines font30 color3" data-area="海城区"  @click="search">合浦县</div>
-						<div class="select_lines font30 color3" data-area="银海区"  @click="search">其他</div>
+						<div class="select_lines font30 color3" data-area="北海区"  @click="search">北海区</div>
+						<div class="select_lines font30 color3" data-area="防城港"  @click="search">防城港</div>
+						<div class="select_lines font30 color3" data-area="钦州"  @click="search">钦州</div>
+						<div class="select_lines font30 color3" data-area="济南"  @click="search">济南</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
@@ -88,25 +87,19 @@
 						<div class="w710">
 							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">类型</p>
 							<div class="condition flex">
-								<div class="condition_item" data-shopMode="不限" @click="search">不限</div>
-								<div class="condition_item" data-shopMode="住宅底商" @click="search">住宅底商</div>
-								<div class="condition_item" data-shopMode="临街对面" @click="search">临街对面</div>
-								<div class="condition_item" style="margin-top:0.2rem;" data-shopMode="写字楼" @click="search">写字楼</div>
+								<div class="condition_item" v-for="item in shopMode" :style="is_shop==item?'color: #ed0000':''" :data-shopMode="item" @click="shopmode">{{item}}</div>
 							</div>
 							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">行业</p>
 							<div class="condition flex area_con padding30  border_c">
-							<div class="condition_item" data-industry="不限" @click="search">不限</div>
-							<div class="condition_item" data-industry="餐饮" @click="search">餐饮</div>
-							<div class="condition_item" data-industry="美食" @click="search">美食</div>
+							<div class="condition_item" :style="is_industry==item?'color:#ed0000':''" v-for="item in sort" :data-industry="item" @click="industry">{{item}}</div>
+							
 							</div>
 							<p class="font30 color6" style="height:0.82rem;line-height:0.82rem">类别</p>
 							<div class="condition flex padding30 border_c">
-								<div class="condition_item" data-shoptype="商铺出租" @click="search">商铺出租</div>
-								<div class="condition_item" data-shoptype="商铺转让" @click="search">商铺转让</div>
+								<div class="condition_item" v-for="item in shoptype" :data-shoptype="item" :style="is_shoptype==item?'color:#ed0000':''" @click="shoptype1">商铺出租</div>
 							</div>
 							<div class="confirm_btn flexRowBetween">
-								<div class="font28 color6 clear_condition">清空搜索条件</div>
-								<div class="bg1 font28 color1">确认</div>
+								<div class="bg1 font28 color1" @click="search">确认</div>
 							</div>
 						</div>
 					</div>
@@ -161,6 +154,12 @@
             	searchItem:{
     			},
     			search_name:'',
+    			shopMode:['不限','住宅底商','临街对面','写字楼'],
+    			is_shop:'',
+    			sort:['不限','餐饮','服饰鞋包','休闲娱乐','美容美发','生活服务','百货超市','酒店宾馆','家居建材'],
+    			is_industry:'',
+    			shoptype:['商铺转让','商铺出租'],
+    			is_shoptype:'',
             }
         },
         
@@ -249,6 +248,26 @@
                         console.log(self.mainData);
                     };
         		window.base.shopsHouseSearch(postData,callback);
+        	},
+        	shopmode(e){
+        		const self =this;
+        		dataSet = window.base.getDataSet(e);
+        		self.searchItem.shopMode = dataSet.shopmode;
+        		console.log(999,self.searchItem.shopMode);
+        		self.is_shop = dataSet.shopmode;
+        	},
+        	industry(e){
+        		const self =this;
+        		dataSet = window.base.getDataSet(e);
+        		self.searchItem.industry = dataSet.industry;
+        		console.log(999,self.searchItem.industry);
+        		self.is_industry = dataSet.industry;
+        	},
+        	shoptype1(e){
+        		const self =this;
+        		dataSet = window.base.getDataSet(e);
+        		self.searchItem.shoptype = dataSet.shoptype;
+        		self.is_shoptype = dataSet.shoptype;
         	},
         	tab(e){
         		const self =this;

@@ -140,7 +140,22 @@ window.base={
     },
 
 /**************************房天下**********************************/
- 
+//设置城市参数
+    setCity(label){
+        localStorage.setItem('city',label);
+        window.location.reload();
+    },
+   findCityName(label){
+    if(label=='2'){
+        return '南宁'
+    }else if(label=='3'){
+        return '北海'
+    }else if(label=='4'){
+        return '钦州'
+    }else if(label=='6'){
+        return '防城港'
+    }
+  },
     GetList:function(param,callback) {
         var allParams = {
             url:'UserArticle/GetList',
@@ -872,7 +887,6 @@ window.base={
        }  
        return theRequest;  
     },
-
     getUrlVars() {
         var vars = [], hash;
         var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');

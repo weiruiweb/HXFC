@@ -42,12 +42,11 @@
 						<img src="images/up2.png" style="left:12.5%">
 					</div>
 					<div class="select_bottom">
-						<div class="select_lines font30 color3" @click="search">不限</div>
-						<div class="select_lines font30 color3" data-area="海城区"  @click="search">海城区</div>
-						<div class="select_lines font30 color3" data-area="银海区"  @click="search">银海区</div>
-						<div class="select_lines font30 color3" data-area="铁山港"  @click="search">铁山港</div>
-						<div class="select_lines font30 color3" data-area="海城区"  @click="search">合浦县</div>
-						<div class="select_lines font30 color3" data-area="银海区"  @click="search">其他</div>
+						<div class="select_lines font30 color3" data-nolimit="不限" @click="search">不限</div>
+						<div class="select_lines font30 color3" data-area="北海区"  @click="search">北海区</div>
+						<div class="select_lines font30 color3" data-area="防城港"  @click="search">防城港</div>
+						<div class="select_lines font30 color3" data-area="钦州"  @click="search">钦州</div>
+						<div class="select_lines font30 color3" data-area="济南"  @click="search">济南</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
@@ -142,14 +141,28 @@
         methods:{
         	secondHouseList(){
         		const self =this;
+        		var area = window.base.GetRequest().area;
+        		var groom = window.base.GetRequest().groom;
+        		var lroom = window.base.GetRequest().lroom;
+        		console.log(10000,typeof(area))
+        		console.log(101,area);
+        		if (area !=='undefined'){
+        			self.searchItem.area =area
+        		}
+        		if(groom !=='undefined'){
+        			self.searchItem.groomArea =groom;
+        			self.searchItem.lroomArea =lroom
+        		}
+        		if(area =='undefined'&&groom =='undefined'){
+        			self.searchItem ={}
+        		}
         		var postData = {};
+        		console.log(999,self.searchItem)
         		 postData = {
 			       		"is_page":true,
 						"currentPage":1,
 						"pagesize":10,
-						"searchItem":{
-						//	"label":1
-					}
+						searchItem:self.searchItem,
 			    };
         		console.log(111,postData);
         		var callback = (res)=>{
@@ -157,27 +170,38 @@
                         self.mainData = res.data; 
                         console.log(self.mainData);
                     };
-        	
-        		window.base.secondHouseList(postData,callback);
+                if (area||groom||lroom) {
+                	postData.sortby = "unitPrice";
+                	postData.sort = "desc";
+                	window.base.secondHouseSearch(postData,callback);
+                }else{
+        			window.base.secondHouseList(postData,callback);
+        		}
         	},
         	search(e){
         		const self =this;
         		self.mainData = [];
         		var dataSet = window.base.getDataSet(e);
-        		if(dataSet.gtotalprice&&dataSet.ltotalprice){
-        			self.searchItem.gtotalPrice = dataSet.gtotalprice;
-        			self.searchItem.ltotalPrice = dataSet.ltotalprice;
-        		}
-        		if (dataSet.groomarea&&dataSet.lroomarea){
-        			self.searchItem.groomArea = dataSet.groomarea;
-        			self.searchItem.lroomArea = dataSet.lroomarea;
-        		}
-        		if (dataSet.layout){
-        			self.searchItem.layout = dataSet.layout;
-        		}
-        		if (dataSet.area){
-        			self.searchItem.area = dataSet.area;
-        		}
+        		console.log(202,e)
+  				if(dataSet.gtotalprice||dataSet.layout||dataSet.area){
+					if(dataSet.gtotalprice&&dataSet.ltotalprice){
+	        			self.searchItem.gtotalPrice = dataSet.gtotalprice;
+	        			self.searchItem.ltotalPrice = dataSet.ltotalprice;
+	        		}
+	        		if (dataSet.groomarea&&dataSet.lroomarea){
+	        			self.searchItem.groomArea = dataSet.groomarea;
+	        			self.searchItem.lroomArea = dataSet.lroomarea;
+	        		}
+	        		if (dataSet.layout){
+	        			self.searchItem.layout = dataSet.layout;
+	        		}
+	        		if (dataSet.area){
+	        			self.searchItem.area = dataSet.area;
+	        		}
+  				}else{
+  					self.searchItem ={}
+  				}
+        		
         		console.log(1000,self.searchItem);
         		var postData = {};
         		 postData = {
@@ -191,9 +215,8 @@
         		var callback = (res)=>{
         				self.isShow = 999;
                         self.mainData = res.data; 
-                        
                     };
-        		window.base.secondHouseSearch(postData,callback);
+                window.base.secondHouseSearch(postData,callback);
         	},
         	searchName(){
         		const self =this;
