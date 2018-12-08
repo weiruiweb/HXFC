@@ -1,7 +1,13 @@
 window.base={
     g_restUrl:'http://www.gxhxfc.com/api/public/index.php/api/v1/',
 
-
+    getCityId:function(){
+        if(localStorage.getItem('city_id')){
+            return localStorage.getItem('city_id')
+        }else{
+            return 3
+        };
+    },
     
     getUserToken:function(callback){
 
@@ -389,13 +395,13 @@ window.base={
     }, 
 
     //发布租房房源
-    rentHomeResouce:function(arrayData,solelyFun){
+    rentHomeResouce:function(arrayData,callback){
       var params = {
         type:'POST',
         url:'UserRentHouse/Submit',
         data:arrayData,
-        solely:function(data){
-          solelyFun &&　solelyFun(data);
+        sCallback:function(data){
+          callback&&callback(data);
         },
       }
       this.getData(params);

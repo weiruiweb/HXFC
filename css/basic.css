@@ -344,6 +344,10 @@ div{
   height:100%;
   overflow: hidden;
 }
+.layoutT_right img{
+  width:100%;
+  height:100%;
+}
 .zixun{
   width:100%;
   height:100%;
@@ -355,6 +359,7 @@ div{
   height:100%;
   font-weight:700;
   margin-left:0.24rem;
+  line-height:normal;
 }
 .layoutT_center a{
   width:96%;

@@ -21,17 +21,13 @@
 			<img src="images/1.jpg">
 		</div>
 		<div class="sort_select flex">
-			<div class="sort_cont flexRowBetween">
-				<div class="select_item flexRowBetween" style="width:50%;border-right: solid 1px #e0e0e0;">
-					<span class="span1 color">装修效果图</span>
-					<span class="span2"><img src="images/up1.png"></span>
-				</div>
-				<div class="select_item flexRowBetween"  style="width:50%;">
-					<span class="span1">预约设计师</span>
-					<span class="span2"><img src="images/up1.png"></span>
-				</div>
-			</div>
-		</div>
+            <div class="sort_cont flexRowBetween">
+                <div class="select_item flexRowBetween" v-for="(item,index) in menuData" @click="tab(index)" style="width:50%;">
+                    <span class="span1" :class="isShow == index?'color':''">{{item}}</span>
+                    <span class="span2"><img src="images/up1.png"></span>
+                </div>
+            </div>
+        </div>
 		<div class="decorateImg">
 			<div class="decorate_img w710 flexRowBetween" style="flex-wrap: wrap;">
 				<div class="recommend_left" v-for="item in imgData">
@@ -57,8 +53,10 @@
         el: '#app',
         data: function() {
             return {
+                menuData:['装修效果图','预约设计师'],
             	mainData:[],
             	imgData:[],
+                isShow:0,
             }
         },
         
@@ -87,7 +85,10 @@
                     };
         		window.base.getArticle(postData,callback);
         	},
-
+            tab(e){
+                const self =this;
+                self.isShow = e
+            },
         }
     });
             

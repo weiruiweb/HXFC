@@ -85,7 +85,7 @@
 			<a class="layout_three_cont flex" href="information.html">
 				<div class="layoutT_left">
 					<div class="zixun flex">
-						<div class="zixun_cont font32 color1">
+						<div class="zixun_cont font28 color1">
 							房产快讯
 						</div>
 					</div>
@@ -128,7 +128,7 @@
 			<h3 class="font36 color3 bottom30" style="margin-top:0.5rem;">快捷找房</h3>
 			<div class="area flex">
 				<p class="font26 color6">区域：</p>
-				<p class="font26 coolr3 area_item" :data-area="item" :style="is_area==item?'color:red':''" @click="searchItem" v-for="(item,index) in cityData">{{item}}</p>
+				<p class="font26 coolr3 area_item" :data-area="item" :style="is_area==item?'color:red':''" @click="searchItem" v-for="(item,index) in areaData">{{item}}</p>
 			</div>
 			<div class="area_two flex">
 				<div class="area flex">
@@ -245,7 +245,7 @@
 <div style="font-size:0.20rem;color:#666;text-align:center;">
     技术支持:西安纯粹科技有限公司
 </div>
-<script type="text/javascript">      
+<script type="text/babel">      
     var app = new Vue({
         el: '#app',
         data: function() {
@@ -258,7 +258,7 @@
             	informationData:[],
             	secondItem:{},
             	searchData:[],
-            	cityData:['济宁','北海区','钦州','防城港'],
+            	areaData:['海城区','银海区','铁山港','合浦县'],
             	selectData:'',
             	selectLabel:'',
             	is_select:false,
@@ -301,9 +301,9 @@
 					"searchItem":{
 						"0":{
 							"theme_id":10,
-							"num":10
+							"num":10,
+						//	"label":window.base.getCityId()
 						},
-						//label:self.selectLabel
 					}
 			    };
         		console.log(111,postData);
@@ -351,7 +351,6 @@
 				}
 				var callback = (res)=>{
                         self.mainData = res.data; 
-                        console.log(789,self.mainData);
                         if(self.mainData.length>0){
                         	window.location.href="./houseDetail.html?id="+self.mainData[0].id
                         }else{
@@ -403,10 +402,9 @@
         	    var dataSet = window.base.getDataSet(e);
         	    self.selectData = dataSet.city;
         	    self.selectLabel = dataSet.label;
+        	    localStorage.setItem('city_id',dataSet.label);
         	    self.is_select = false;
-        	    console.log(999,self.selectLabel);
-			    localStorage.setItem('city',self.selectLabel);
-			    // window.location.reload();
+			    window.location.reload();
         	},
         	appoint:function(e){
         		const self = this;

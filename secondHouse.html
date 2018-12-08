@@ -43,10 +43,10 @@
 					</div>
 					<div class="select_bottom">
 						<div class="select_lines font30 color3" data-nolimit="不限" @click="search">不限</div>
-						<div class="select_lines font30 color3" data-area="北海区"  @click="search">北海区</div>
-						<div class="select_lines font30 color3" data-area="防城港"  @click="search">防城港</div>
-						<div class="select_lines font30 color3" data-area="钦州"  @click="search">钦州</div>
-						<div class="select_lines font30 color3" data-area="济南"  @click="search">济南</div>
+						<div class="select_lines font30 color3" data-area="海城区"  @click="search">海城区</div>
+						<div class="select_lines font30 color3" data-area="银海区"  @click="search">银海区</div>
+						<div class="select_lines font30 color3" data-area="铁山港"  @click="search">铁山港</div>
+						<div class="select_lines font30 color3" data-area="合浦县"  @click="search">合浦县</div>
 					</div>
 				</div>
 				<div class="select_box" :style="isShow == 1?'display:block':'display:none'">
@@ -129,6 +129,7 @@
             	menuData:['区域','价格','户型','面积'],
             	mainData:[],
     			searchItem:{
+    				label:window.base.getCityId()
     			},
     			search_name:'',
             }
@@ -233,9 +234,11 @@
 					}
 				}
 				var callback = (res)=>{
-        			console.log(21,res);
-                        self.mainData = res.data; 
-                        console.log(self.mainData);
+        			if(res.total>0){
+	        				 self.mainData = res.data; 
+	        			}else{
+	        				alert('没有该楼盘')
+	        			}
                     };
         		window.base.secondHouseSearch(postData,callback);
         	},
